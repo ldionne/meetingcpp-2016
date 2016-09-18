@@ -132,6 +132,80 @@ E "primes.cpp",L11/C25(#416):   prim
 |    Type `enum{}´ can´t be converted to txpe `D<29>´ ("primes.cpp",L2/C25).
 ```
 
+====================
+
+In January 1995, Todd Veldhuizen published an article in the C++ Report that
+showcased the first use of Expression Templates.
+
+Note:
+Article can be found here: http://www.cs.rpi.edu/~musser/design/blitz/meta-art.html
+
+====================
+
+In 2001, Andrei Alexandrescu published __Modern C++ Design__.
+The book made a treatment of C++ metaprogramming by introducing concepts like
+Typelists and algorithms on them. The book was describing a library called Loki,
+which he made available to the public.
+
+====================
+
+In 2004, David Abrahams and Aleksey Gurtovoy published __C++ Template
+Metaprogramming: Concepts, Tools, and Techniques from Boost and Beyond__,
+also coined the __MPL Book__. The book made a thorough treatment of
+metaprogramming by presenting the __Boost MPL__ library, which contained
+several compile-time data structures and algorithms:
+- mpl::vector
+- mpl::map
+- mpl::set
+- mpl::list
+
+- mpl::sort
+- mpl::reverse
+- mpl::push_back
+- etc...
+
+The MPL is designed after the STL, with iterators, etc..
+
+----
+
+TODO:
+Add examples of using the MPL. The examples should not only be toys, they
+should actually be useful.
+
+====================
+
+In 2008, the Boost Fusion library was released by Joel de Guzman, Dan Marsden
+and Tobias Schwinger. Fusion emerged out of a need to have a way of storing
+and manipulating heterogeneous collections of objects in the Boost Spirit and
+Phoenix libraries.
+
+TODO:
+Add examples of why heterogeneous collections might be useful in the context
+of e.g. Spirit grammars.
+
+----
+
+TODO:
+Explain how this is different from MPL:
+  MPL focuses on type manipulation only. Ultimately, you'll
+  have to map these types to real values to make them useful in the runtime world
+  where all the real action takes place.
+
+----
+
+Similarly to MPL, Fusion provides data structures and algorithms to manipulate
+them.
+
+- fusion::vector
+- fusion::list
+- fusion::map
+
+- fusion::reverse
+- etc..
+
+TODO:
+Show and example of using Fusion as-is.
+
 ==============================================================================
 
 ## Part 2
@@ -174,7 +248,7 @@ http://github.com/boostorg/hana
 
         <script>
             Reveal.initialize({
-                slideNumber: false,
+                slideNumber: true,
                 history: true,
                 transition: 'slide',
 
