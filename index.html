@@ -45,6 +45,93 @@ Note:
 Discuss Loki, MPL and Fusion
 Spend 30 minutes here
 
+====================
+
+The original purpose of templates was to allow writing generic algorithms and
+containers for the standard library.
+
+The standard Committee suspected that templates were hiding something more
+powerful, but it was not clear.
+
+====================
+
+In 1994, at the San Diego meeting, Erwin Unruh came up with a program that
+would print prime numbers at compile-time.
+
+This proved that templates could be used to perform arbitrary computations
+inside at compile-time. In other words, C++ contained a Turing complete
+sub-language that could be executed inside the compiler. The result of
+a program written in that language is another C++ program.
+
+----
+
+### This is the program
+#### source: http://www.erwin-unruh.de/primorig.html
+
+```c++
+template <int i> struct D { D(void*); operator int(); };
+
+template <int p, int i> struct is_prime {
+  enum { prim = (p%i) && is_prime<(i > 2 ? p : 0), i -1> :: prim };
+};
+
+template < int i > struct Prime_print {
+  Prime_print<i-1> a;
+  enum { prim = is_prime<i, i-1>::prim };
+  void f() { D<i> d = prim; }
+};
+
+struct is_prime<0,0> { enum {prim=1}; };
+struct is_prime<0,1> { enum {prim=1}; };
+struct Prime_print<2> { enum {prim = 1}; void f() { D<2> d = prim; } };
+#ifndef LAST
+#define LAST 10
+#endif
+main () {
+  Prime_print<LAST> a;
+}
+```
+
+----
+
+### Output
+
+```
+P:\HC\D386_O> hc3 i primes.cpp -DLAST=30
+
+MetaWare High C/C++ Compiler R2.6
+(c) Copyright 1987-94, MetaWare Incorporated
+E "primes.cpp",L16/C63(#416):   prim
+|    Type `enum{}´ can´t be converted to txpe `D<2>´ ("primes.cpp",L2/C25).
+-- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
+E "primes.cpp",L11/C25(#416):   prim
+|    Type `enum{}´ can´t be converted to txpe `D<3>´ ("primes.cpp",L2/C25).
+-- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
+E "primes.cpp",L11/C25(#416):   prim
+|    Type `enum{}´ can´t be converted to txpe `D<5>´ ("primes.cpp",L2/C25).
+-- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
+E "primes.cpp",L11/C25(#416):   prim
+|    Type `enum{}´ can´t be converted to txpe `D<7>´ ("primes.cpp",L2/C25).
+-- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
+E "primes.cpp",L11/C25(#416):   prim
+|    Type `enum{}´ can´t be converted to txpe `D<11>´ ("primes.cpp",L2/C25).
+-- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
+E "primes.cpp",L11/C25(#416):   prim
+|    Type `enum{}´ can´t be converted to txpe `D<13>´ ("primes.cpp",L2/C25).
+-- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
+E "primes.cpp",L11/C25(#416):   prim
+|    Type `enum{}´ can´t be converted to txpe `D<17>´ ("primes.cpp",L2/C25).
+-- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
+E "primes.cpp",L11/C25(#416):   prim
+|    Type `enum{}´ can´t be converted to txpe `D<19>´ ("primes.cpp",L2/C25).
+-- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
+E "primes.cpp",L11/C25(#416):   prim
+|    Type `enum{}´ can´t be converted to txpe `D<23>´ ("primes.cpp",L2/C25).
+-- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
+E "primes.cpp",L11/C25(#416):   prim
+|    Type `enum{}´ can´t be converted to txpe `D<29>´ ("primes.cpp",L2/C25).
+```
+
 ==============================================================================
 
 ## Part 2
