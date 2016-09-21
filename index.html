@@ -42,7 +42,7 @@
 ## A bit of history
 
 Note:
-Discuss Loki, MPL and Fusion
+Discuss the beginnings of metaprogramming, Loki, MPL and Fusion
 Spend 30 minutes here
 
 ====================
@@ -209,11 +209,60 @@ Show and example of using Fusion as-is.
 ==============================================================================
 
 ## Part 2
-## C++11, C++14 and the present
+## C++11, C++14, and the present
 
 Note:
 Discuss libraries like Brigand, Hana and the basics in std
 We can spend a good 45 minutes here
+
+====================
+
+C++11 introduced many new features that we expected would allow better
+compile-time performance, better error messages and more expressiveness.
+
+- Variadic templates
+- ???
+
+====================
+
+So, in 2012, I started working on MPL11, a C++11-aware metaprogramming library.
+It started out as a modernized MPL (same design), but ended up diverging
+significantly. MPL uses iterators like in the STL, but iterators are not
+the best abstraction for a purely functional and compile-time language.
+
+Since then, others have undertaken similar projects, the most successful
+probably being Brigand
+
+TODO:
+Show examples, discuss compile-time performance, etc..
+
+====================
+
+Eventually, in 2013, I realized that we could leverage C++14 features to take
+this to the next level. I stopped working on MPL11 and started working on Hana.
+What was the insight?
+
+TODO:
+Explain how we represent types as values.
+Explain how this allows us to do what Fusion did in addition to what MPL did.
+Show examples of using Hana, and discuss compile-time + runtime performance.
+
+====================
+
+In the meantime, some things have made it into the Standard:
+- type_traits (C++11)
+- tuple (C++11)
+- enable_if (C++11)
+- integer_sequence (C++14)
+
+- fold expressions (C++17)
+- if constexpr (C++17)
+- logical type traits (C++17)
+- void_t (C++17)
+- _v variable templates for type traits (C++17)
+
+Unfortunately, we're lacking a __unified__ view of how these features are to
+work together. The result is that they _don't_ work together seamlessly.
 
 ==============================================================================
 
@@ -224,6 +273,10 @@ Note:
 Discuss how some language features could make Hana-style more expressive.
 Discuss additions to the standard library.
 Spend 30 minutes here
+
+----
+
+## Metaprogramming by design, not by accident
 
 ==============================================================================
 
