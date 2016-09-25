@@ -47,26 +47,33 @@ Spend 30 minutes here
 
 ====================
 
-The original purpose of templates was to allow writing generic algorithms and
-containers for the standard library.
+### It all started with templates
 
-The standard Committee suspected that templates were hiding something more
-powerful, but it was not clear.
+```c++
+template <typename T>
+struct vector { /* ... */ };
 
-====================
+int main() {
+  vector<int> ints = {1, 2, 3};
+  vector<string> strings = {"foo", "bar", "baz"};
+}
+```
 
-In 1994, at the San Diego meeting, Erwin Unruh came up with a program that
-would print prime numbers at compile-time.
-
-This proved that templates could be used to perform arbitrary computations
-inside at compile-time. In other words, C++ contained a Turing complete
-sub-language that could be executed inside the compiler. The result of
-a program written in that language is another C++ program.
+Note:
+Goal: generic containers and algorithms for the standard library
 
 ----
 
-### This is the program
-#### source: http://www.erwin-unruh.de/primorig.html
+### The Committee suspected templates were hiding something more powerful
+
+----
+
+### It wasn't clear until someone came up with a very special program
+
+====================
+
+### March 1994, San Diego meeting
+### Erwin Unruh comes up with this:
 
 ```c++
 template <int i> struct D { D(void*); operator int(); };
@@ -92,9 +99,15 @@ main () {
 }
 ```
 
+(source: http://www.erwin-unruh.de/primorig.html)
+
 ----
 
-### Output
+### What does this program do?
+
+----
+
+### It prints prime numbers at compile-time
 
 ```
 P:\HC\D386_O> hc3 i primes.cpp -DLAST=30
@@ -102,69 +115,154 @@ P:\HC\D386_O> hc3 i primes.cpp -DLAST=30
 MetaWare High C/C++ Compiler R2.6
 (c) Copyright 1987-94, MetaWare Incorporated
 E "primes.cpp",L16/C63(#416):   prim
-|    Type `enum{}´ can´t be converted to txpe `D<2>´ ("primes.cpp",L2/C25).
--- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
+|    Type `enum{}´ can´t be converted to txpe `D<2>´ [...]
+-- Detected during instantiation of Prime_print<30> [...]
 E "primes.cpp",L11/C25(#416):   prim
-|    Type `enum{}´ can´t be converted to txpe `D<3>´ ("primes.cpp",L2/C25).
--- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
+|    Type `enum{}´ can´t be converted to txpe `D<3>´ [...]
+-- Detected during instantiation of Prime_print<30> [...]
 E "primes.cpp",L11/C25(#416):   prim
-|    Type `enum{}´ can´t be converted to txpe `D<5>´ ("primes.cpp",L2/C25).
--- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
+|    Type `enum{}´ can´t be converted to txpe `D<5>´ [...]
+-- Detected during instantiation of Prime_print<30> [...]
 E "primes.cpp",L11/C25(#416):   prim
-|    Type `enum{}´ can´t be converted to txpe `D<7>´ ("primes.cpp",L2/C25).
--- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
+|    Type `enum{}´ can´t be converted to txpe `D<7>´ [...]
+-- Detected during instantiation of Prime_print<30> [...]
 E "primes.cpp",L11/C25(#416):   prim
-|    Type `enum{}´ can´t be converted to txpe `D<11>´ ("primes.cpp",L2/C25).
--- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
+|    Type `enum{}´ can´t be converted to txpe `D<11>´ [...]
+-- Detected during instantiation of Prime_print<30> [...]
 E "primes.cpp",L11/C25(#416):   prim
-|    Type `enum{}´ can´t be converted to txpe `D<13>´ ("primes.cpp",L2/C25).
--- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
-E "primes.cpp",L11/C25(#416):   prim
-|    Type `enum{}´ can´t be converted to txpe `D<17>´ ("primes.cpp",L2/C25).
--- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
-E "primes.cpp",L11/C25(#416):   prim
-|    Type `enum{}´ can´t be converted to txpe `D<19>´ ("primes.cpp",L2/C25).
--- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
-E "primes.cpp",L11/C25(#416):   prim
-|    Type `enum{}´ can´t be converted to txpe `D<23>´ ("primes.cpp",L2/C25).
--- Detected during instantiation of Prime_print<30> at "primes.cpp",L21/C5:
-E "primes.cpp",L11/C25(#416):   prim
-|    Type `enum{}´ can´t be converted to txpe `D<29>´ ("primes.cpp",L2/C25).
+|    Type `enum{}´ can´t be converted to txpe `D<13>´ [...]
+
+[...]
 ```
 
-====================
+----
 
-In January 1995, Todd Veldhuizen published an article in the C++ Report that
-showcased the first use of Expression Templates.
+### This proves that templates can be used to perform arbitrary compile-time computations
+
 
 Note:
-Article can be found here: http://www.cs.rpi.edu/~musser/design/blitz/meta-art.html
+In other words, C++ contains a Turing-complete sub-language that can be
+executed inside the compiler. The result of a program written in that
+language is another C++ program, which in this case is invalid and thus
+causes the compiler to give away selected parts of its output.
+
+----
+
+### But we still lack concrete and/or creative applications of templates outside the STL
 
 ====================
 
-In 2001, Andrei Alexandrescu published __Modern C++ Design__.
-The book made a treatment of C++ metaprogramming by introducing concepts like
-Typelists and algorithms on them. The book was describing a library called Loki,
-which he made available to the public.
+### The C++ Report, January 1995
+### Todd Veldhuizen publishes [an article](http://www.cs.rpi.edu/~musser/design/blitz/meta-art.html) on Expression Templates
+
+----
+
+### But what are expression templates?
+
+```c++
+template <typename T>
+struct Matrix { /* ... */ };
+
+template <typename E1, typename E2>
+class Sum {
+  E1 const& left_;
+  E2 const& right_;
+
+public:
+  auto operator[](std::pair<std::size_t, std::size_t> index) const
+  { return left_[index] + right_[index]; }
+};
+
+template <typename Left, typename Right>
+Sum<Left, Right> operator+(Left const& left, Right const& right)
+{ return {left, right}; }
+
+int main() {
+  Matrix<int> m1 = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+  Matrix<int> m2 = {{9, 8, 7}, {6, 5, 4}, {3, 2, 1}};
+  auto sum = m1 + m2; // Nothing done yet!
+  auto x = sum[{1, 2}]; // The work is done here
+}
+```
+
+Note:
+In practice, we really want to recognize patterns and optimize them with
+hand-written kernels, so the above is not really useful as-is.
 
 ====================
 
-In 2004, David Abrahams and Aleksey Gurtovoy published __C++ Template
-Metaprogramming: Concepts, Tools, and Techniques from Boost and Beyond__,
-also coined the __MPL Book__. The book made a thorough treatment of
-metaprogramming by presenting the __Boost MPL__ library, which contained
-several compile-time data structures and algorithms:
-- mpl::vector
-- mpl::map
-- mpl::set
-- mpl::list
+### Fast forward to 2001
+### Andrei Alexandrescu publishes Modern C++ Design
 
-- mpl::sort
-- mpl::reverse
-- mpl::push_back
+----
+
+### Introduces the [Loki](http://loki-lib.sourceforge.net) library, which includes `Typelist`
+
+```c++
+template <class T, class U>
+struct Typelist {
+   typedef T Head;
+   typedef U Tail;
+};
+
+using Types = LOKI_TYPELIST_4(int, char, float, void);
+static_assert(std::is_same<
+    Loki::TL::TypeAt<Types, 2>::Result,
+    float
+>::value, "");
+```
+
+----
+
+### Several algorithms on `Typelist` are provided
+
+```c++
+using Types = LOKI_TYPELIST_6(int, char, float, char, void, float);
+
+using NoChar = Loki::TL::EraseAll<Types, char>::Result;
+using Uniqued = Loki::TL::NoDuplicates<Types>::Result;
+using Reversed = Loki::TL::Reverse<Types>::Result;
+// etc...
+```
+
+----
+
+### The notion of compile-time algorithms and data structures starts to emerge
+
+====================
+
+### 2004
+### D. Abrahams and A. Gurtovoy publish the MPL book
+
+<span class="fragment">
+The book is actually called <br/>_C++ Template Metaprogramming: Concepts, Tools,
+and Techniques from Boost and Beyond_
+</span>
+
+----
+
+### It makes a thorough treatment of metaprogramming through the Boost MPL library
+
+----
+
+### The library contains several meta data structures
+
+- `boost::mpl::vector`
+- `boost::mpl::list`
+- `boost::mpl::map`
+- `boost::mpl::set`
+- `boost::mpl::string`
+
+----
+
+### It also provides several generic algorithms working on meta-iterators, like the STL
+
+- `boost::mpl::sort`
+- `boost::mpl::reverse`
+- `boost::mpl::accumulate`
+- `boost::mpl::transform`
+- `boost::mpl::partition`
 - etc...
-
-The MPL is designed after the STL, with iterators, etc..
 
 ----
 
@@ -205,6 +303,11 @@ them.
 
 TODO:
 Show and example of using Fusion as-is.
+
+====================
+
+TODO:
+Mention "Instantiations must go"
 
 ==============================================================================
 
@@ -303,7 +406,7 @@ http://github.com/boostorg/hana
             Reveal.initialize({
                 slideNumber: true,
                 history: true,
-                transition: 'slide',
+                transition: 'none',
 
                 dependencies: [
                     { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
