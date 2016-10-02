@@ -266,9 +266,46 @@ and Techniques from Boost and Beyond_
 
 ----
 
-TODO:
-Add examples of using the MPL. The examples should not only be toys, they
-should actually be useful.
+### But why would we ever want this?
+### I mean, really?
+
+----
+
+### Enter dimensional analysis
+
+```c++
+double m = 10.3;  // mass in kg
+double d = 3.6;   // distance in meters
+double t = 2.4;   // time delta in seconds
+double v = d / t; // speed in m/s
+double a = ...;   // acceleration in m/s²
+
+double force = m * v; // What's wrong?
+```
+
+----
+
+### Solution? Attach units to quantities!
+
+<pre><code class='sample' sample='code/mpl.dim.cpp#quantity'></code></pre>
+
+----
+
+### Representing dimensions
+
+<pre><code class='sample' sample='code/mpl.dim.cpp#dimensions'></code></pre>
+
+----
+
+### Comparing dimensions
+
+<pre><code class='sample' sample='code/mpl.dim.cpp#dimensions-compare'></code></pre>
+
+----
+
+### Composing dimensions
+
+<pre><code class='sample' sample='code/mpl.dim.cpp#dimensions-compose'></code></pre>
 
 ====================
 
