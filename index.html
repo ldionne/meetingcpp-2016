@@ -159,31 +159,7 @@ causes the compiler to give away selected parts of its output.
 
 ### But what are expression templates?
 
-```c++
-template <typename T>
-struct Matrix { /* ... */ };
-
-template <typename E1, typename E2>
-class Sum {
-  E1 const& left_;
-  E2 const& right_;
-
-public:
-  auto operator[](std::pair<std::size_t, std::size_t> index) const
-  { return left_[index] + right_[index]; }
-};
-
-template <typename Left, typename Right>
-Sum<Left, Right> operator+(Left const& left, Right const& right)
-{ return {left, right}; }
-
-int main() {
-  Matrix<int> m1 = {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
-  Matrix<int> m2 = {{9, 8, 7}, {6, 5, 4}, {3, 2, 1}};
-  auto sum = m1 + m2; // Nothing done yet!
-  auto x = sum[{1, 2}]; // The work is done here
-}
-```
+<pre><code class='sample' sample='code/expression_templates.cpp#main'></code></pre>
 
 Note:
 In practice, we really want to recognize patterns and optimize them with
