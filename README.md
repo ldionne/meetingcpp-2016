@@ -1,11 +1,10 @@
-## "C++ metaprogramming: evolution and future directions" keynote for [Meeting C++][] 2016
+## C++ metaprogramming: evolution and future directions @ [Meeting C++][] 2016
 
 This repository contains my [reveal.js][]-based presentation on metaprogramming
-for dummies for C++Now 2016.
+for Meeting C++ 2016.
 
 ## Basic usage
-Go to https://ldionne.github.io/cppnow-2016-metaprogramming-for-dummies or
-open `index.html` with your browser.
+Go to https://ldionne.com/meetingcpp-2016 or open `index.html` with your browser.
 
 ## Advanced usage
 From the root of the repository,
