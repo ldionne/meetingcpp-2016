@@ -62,6 +62,19 @@ auto depends_on(F const& f, G const& g) {
   );
 }
 
+#ifdef CPP17
+template <typename F, typename G>
+auto depends_on(F const& f, G const& g) {
+  if constexpr (hana::contains(f.dependencies, g)) {
+    return hana::true_c;
+  } else {
+    return hana::any_of(f.dependencies, [&](auto const& dep) {
+      return depends_on(dep, g);
+    });
+  }
+}
+#endif
+
 template <typename Fs>
 auto linearized(Fs const& fs) {
   return hana::sort(fs, [](auto const& f, auto const& g) {
@@ -95,7 +108,7 @@ auto run_parallel(F const& f, std::launch policy) {
   });
 
   hana::for_each(independent_groups, [policy](auto const& group) {
-    auto futures = hana::transform(group, [&](auto const& f) {
+    auto futures = hana::transform(group, [policy](auto const& f) {
       return std::async(policy, f);
     });
     hana::for_each(std::move(futures), [](auto const& f) {
