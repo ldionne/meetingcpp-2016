@@ -390,40 +390,71 @@ Note:
 ## C++11, C++14, and the present
 
 Note:
-Discuss libraries like Brigand, Hana and the basics in std
+Discuss libraries like Brigand and Hana
 We can spend a good 45 minutes here
 
-====================
+----
 
-C++11 introduced many new features that we expected would allow better
-compile-time performance, better error messages and more expressiveness.
+### Key features enable a new way of metaprogramming
 
+- Function return type deduction
+- Generic lambdas
+- `decltype`
 - Variadic templates
-- ???
+
+Note:
+Mention that we can get better compile-time performance and error messages
 
 ====================
 
-So, in 2012, I started working on MPL11, a C++11-aware metaprogramming library.
-It started out as a modernized MPL (same design), but ended up diverging
-significantly. MPL uses iterators like in the STL, but iterators are not
-the best abstraction for a purely functional and compile-time language.
+### What is this "new way"?
 
-Since then, others have undertaken similar projects, the most successful
-probably being Brigand
+----
 
-TODO:
-Show examples, discuss compile-time performance, etc..
+### Essentially: represent compile-time entities as objects
 
 ====================
 
-Eventually, in 2013, I realized that we could leverage C++14 features to take
-this to the next level. I stopped working on MPL11 and started working on Hana.
-What was the insight?
+### Integers
 
-TODO:
-Explain how we represent types as values.
-Explain how this allows us to do what Fusion did in addition to what MPL did.
-Show examples of using Hana, and discuss compile-time + runtime performance.
+<pre><code class='sample' sample='code/present.int.cpp#integral_constant'></code></pre>
+
+Note:
+`std::integral_constant` is just a way to represent compile-time integers as types.
+Let's represent them as objects and see what gives.
+
+----
+
+### Compile-time arithmetic: classic approach
+
+<pre><code class='sample' sample='code/present.int.cpp#classic'></code></pre>
+
+Note:
+Here, we represent integers as types
+
+----
+
+### What if?
+
+<pre><code class='sample' sample='code/present.int.cpp#operators'></code></pre>
+
+----
+
+### Usual operators now work!
+
+<pre><code class='sample' sample='code/present.int.cpp#use-operators-1'></code></pre>
+
+----
+
+### (or simply)
+
+<pre><code class='sample' sample='code/present.int.cpp#use-operators-2'></code></pre>
+
+----
+
+### Syntactic sugar
+
+<pre><code class='sample' sample='code/present.int.cpp#use-operators-3'></code></pre>
 
 ====================
 
