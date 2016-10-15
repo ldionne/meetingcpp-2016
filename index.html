@@ -458,20 +458,81 @@ Here, we represent integers as types
 
 ====================
 
-In the meantime, some things have made it into the Standard:
-- type_traits (C++11)
-- tuple (C++11)
-- enable_if (C++11)
-- integer_sequence (C++14)
+### Types
 
-- fold expressions (C++17)
-- if constexpr (C++17)
-- logical type traits (C++17)
-- void_t (C++17)
-- _v variable templates for type traits (C++17)
+----
 
-Unfortunately, we're lacking a __unified__ view of how these features are to
-work together. The result is that they _don't_ work together seamlessly.
+### Type traits: classic approach
+
+<pre><code class='sample' sample='code/present.type.cpp#classic'></code></pre>
+
+----
+
+### What if?
+
+<pre><code class='sample' sample='code/present.type.cpp#operators'></code></pre>
+
+----
+
+### Usual function call syntax works!
+
+<pre><code class='sample' sample='code/present.type.cpp#use-operators'></code></pre>
+
+====================
+
+### Remember `Typelist` and `mpl::vector`?
+
+----
+
+### Turns out they're just tuples!
+
+<pre><code class='sample' sample='code/present.type.cpp#typelist'></code></pre>
+
+----
+
+### Sugar
+
+<pre><code class='sample' sample='code/present.type.cpp#typelist-sugar'></code></pre>
+
+====================
+
+### A quick tour of Hana
+
+- data structures like Boost.Fusion
+- algorithms like Boost.Fusion
+- a way to represent types as values
+
+=> Everything you need from MPL and Fusion in a single library
+
+TODO:
+Layout this as a long addition
+
+----
+
+### Data structures
+
+- `boost::hana::tuple`
+- `boost::hana::map`
+- `boost::hana::set`
+
+----
+
+### Algorithms
+
+- `boost::hana::remove_if`
+- `boost::hana::find_if`
+- `boost::hana::count_if`
+- `boost::hana::transform`
+- `boost::hana::reverse`
+- etc...
+
+----
+
+### Utilities
+
+- `boost::hana::type`
+- `boost::hana::integral_constant`
+- `boost::hana::string`
 
 ==============================================================================
 
