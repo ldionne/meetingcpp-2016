@@ -2,6 +2,7 @@
 // Distributed under the Boost Software License, Version 1.0.
 
 #include <cstddef>
+#include <iostream>
 #include <type_traits>
 
 
@@ -89,4 +90,31 @@ static_assert(std::is_same<
 >::value, "");
 // end-sample
 
-int main() { }
+// sample(constexpr)
+static_assert(1 + 4 == 5, "");
+// end-sample
+
+// sample(overload)
+template <typename X, typename Y>
+auto f(X x, Y y) -> std::enable_if_t<(x == y)> {
+  std::cout << "x == y is known at compile-time" << std::endl;
+}
+
+template <typename X, typename Y>
+auto f(X x, Y y) -> std::enable_if_t<(x != y)> {
+  std::cout << "x != y is known at compile-time" << std::endl;
+}
+
+int main() {
+  f(3_c, 3_c); // first overload taken
+  f(4_c, 3_c); // second overload taken
+
+#if 0 // end-sample sample(overload)
+  int i;
+  std::cin >> i;
+  f(i, 3_c); // ERROR! The value of 'i' is only known at runtime!
+  f(3, 3_c); // ERROR! No distinction between 'runtime' and
+             //       'compile-time' int.
+#endif // end-sample sample(overload)
+}
+// end-sample
