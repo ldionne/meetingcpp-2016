@@ -46,7 +46,7 @@ Sum<Left, Right> operator+(Left const& left, Right const& right)
 int main() {
   Matrix<int> m1{{ 1,  2,  3}, { 4,  5,  6}, { 7,  8,  9}};
   Matrix<int> m2{{11, 12, 13}, {14, 15, 16}, {17, 18, 19}};
-  auto sum = m1 + m2; // Nothing done yet!
+  auto sum = m1 + m2;  // Nothing done yet!
   int x = sum[{1, 2}]; // The work is done here
   assert(x == 6 + 16);
 }
