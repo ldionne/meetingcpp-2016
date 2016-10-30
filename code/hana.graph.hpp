@@ -291,6 +291,7 @@ constexpr auto operator>>(node<F> const& from, hana::tuple<node<G>...> const& to
 
 #if 0
 
+// sample(depends_on)
 template <typename F, typename G>
 auto depends_on(F const& f, G const& g) {
   return hana::eval_if(hana::contains(f.dependencies, g),
@@ -302,8 +303,10 @@ auto depends_on(F const& f, G const& g) {
     }
   );
 }
+// end-sample
 
 #ifdef CPP17
+// sample(depends_on-cpp17)
 template <typename F, typename G>
 auto depends_on(F const& f, G const& g) {
   if constexpr (hana::contains(f.dependencies, g)) {
@@ -314,6 +317,7 @@ auto depends_on(F const& f, G const& g) {
     });
   }
 }
+// end-sample
 #endif
 
 template <typename Fs>

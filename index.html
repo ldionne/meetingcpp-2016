@@ -705,19 +705,47 @@ Spend 30 minutes here
 ### C++17 will give us
 
 - `if constexpr`
-- `auto` template parameters
-- template argument deduction for class templates
 - constexpr lambdas
+- template argument deduction for class templates
+- `auto` template parameters
 - inline variables
 - structured bindings
 
-====================
+----
 
 ### C++20 may give us
 
 - lambdas in unevaluated contexts
 - literal operator template for strings
 - familiar template syntax for lambdas
+
+====================
+
+### What would metaprogramming look like?
+
+----
+
+### Let's go back to our graph example
+
+<pre><code class='sample' sample='code/hana.graph.hpp#depends_on'></code></pre>
+
+Becomes
+
+<pre><code class='sample' sample='code/hana.graph.hpp#depends_on-cpp17'></code></pre>
+
+----
+
+### We could mark all the functions `constexpr`
+
+<pre><code class='sample' sample='code/hana.graph.cpp#constexpr-usage'></code></pre>
+
+----
+
+### No need for `make_graph` anymore
+
+<pre><code class='sample' sample='code/hana.graph.cpp#no-make_graph'></code></pre>
+
+TODO: Finish the overview of the future
 
 ==============================================================================
 

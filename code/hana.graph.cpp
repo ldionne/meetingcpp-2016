@@ -29,3 +29,35 @@ int main() {
   }
 }
 // end-sample
+
+#if 0
+// sample(constexpr-usage)
+constexpr auto square = make_node([](int v) { return v * v; });
+constexpr auto cube   = make_node([](int v) { return v * v * v; });
+constexpr auto sum    = make_node([](int x, int y) { return x + y; });
+constexpr auto twice  = make_node([](int x) { return x * 2; });
+
+constexpr auto g = make_graph(
+  input >> (square, cube),
+  (square, cube) >> sum,
+  cube >> twice,
+  (twice, sum) >> output
+);
+//end-sample
+#endif
+
+#if 0
+// sample(no-make_graph)
+constexpr auto square = make_node([](int v) { return v * v; });
+constexpr auto cube   = make_node([](int v) { return v * v * v; });
+constexpr auto sum    = make_node([](int x, int y) { return x + y; });
+constexpr auto twice  = make_node([](int x) { return x * 2; });
+
+constexpr graph g{
+  input >> (square, cube),
+  (square, cube) >> sum,
+  cube >> twice,
+  (twice, sum) >> output
+};
+//end-sample
+#endif
