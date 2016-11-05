@@ -12,19 +12,19 @@
 namespace fusion = boost::fusion;
 
 
-// sample(event_system-1)
+// sample(struct)
 template <typename EventMap>
 struct event_system {
   EventMap map_;
 // end-sample
 
-// sample(event_system-3)
+// sample(is_known_event)
   template <typename Event>
   static constexpr bool is_known_event =
     fusion::result_of::has_key<EventMap, Event>::value;
 // end-sample
 
-// sample(event_system-2)
+// sample(on)
   template <typename Event, typename F>
   void on(F handler) {
     static_assert(is_known_event<Event>,
@@ -34,7 +34,7 @@ struct event_system {
   }
 // end-sample
 
-// sample(event_system-4)
+// sample(trigger)
   template <typename Event>
   void trigger() {
     static_assert(is_known_event<Event>,

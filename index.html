@@ -354,19 +354,19 @@ Note:
 
 ----
 
-<pre><code class='sample' sample='code/fusion.callbacks.cpp#event_system-1'></code></pre>
+<pre><code class='sample' sample='code/fusion.callbacks.cpp#struct'></code></pre>
 
 ----
 
-<pre><code class='sample' sample='code/fusion.callbacks.cpp#event_system-2'></code></pre>
+<pre><code class='sample' sample='code/fusion.callbacks.cpp#on'></code></pre>
 
 ----
 
-<pre><code class='sample' sample='code/fusion.callbacks.cpp#event_system-3'></code></pre>
+<pre><code class='sample' sample='code/fusion.callbacks.cpp#is_known_event'></code></pre>
 
 ----
 
-<pre><code class='sample' sample='code/fusion.callbacks.cpp#event_system-4'></code></pre>
+<pre><code class='sample' sample='code/fusion.callbacks.cpp#trigger'></code></pre>
 
 ====================
 
@@ -629,96 +629,69 @@ After
 
 <pre><code class='sample' sample='code/hana.example.cpp#fusion'></code></pre>
 
-----
+====================
 
-### But why would we ever want this?
-### I mean, really?
-
-----
-
-### Let's look at automatic parallelization
-
-![TBB flow graph](img/tbb_flow_graph.jpg)
+### Let's Hana-ify the event system
 
 ----
 
-### Using `tbb::flow::graph`
+### Before
 
-```c++
-#include <cstdio>
-#include "tbb/flow_graph.h"
-using namespace tbb::flow;
-
-
-struct square {
-  int operator()(int v) { return v*v; }
-};
-
-struct cube {
-  int operator()(int v) { return v*v*v; }
-};
-
-class sum {
-  int &my_sum;
-public:
-  sum( int &s ) : my_sum(s) {}
-  int operator()( tuple< int, int > v ) {
-    my_sum += get<0>(v) + get<1>(v);
-    return my_sum;
-  }
-};
-```
-
-(example taken from [here](https://software.intel.com/en-us/node/506217))
+<pre><code class='sample' sample='code/fusion.callbacks.cpp#usage'></code></pre>
 
 ----
 
-```c++
-int main() {
-  int result = 0;
+### After
 
-  graph g;
-  broadcast_node<int> input(g);
-  function_node<int,int> squarer( g, unlimited, square() );
-  function_node<int,int> cuber( g, unlimited, cube() );
-  join_node< tuple<int,int>, queueing > join( g );
-  function_node<tuple<int,int>,int>
-      summer( g, serial, sum(result) );
-
-  make_edge( input, squarer );
-  make_edge( input, cuber );
-  make_edge( squarer, get<0>( join.input_ports() ) );
-  make_edge( cuber, get<1>( join.input_ports() ) );
-  make_edge( join, summer );
-
-  for (int i = 1; i <= 10; ++i)
-      input.try_put(i);
-  g.wait_for_all();
-
-  printf("Final result is %d\n", result);
-}
-```
+<pre><code class='sample' sample='code/hana.callbacks.cpp#usage'></code></pre>
 
 ----
 
-### Often, dependencies are known at compile-time
+### Before
+
+<pre><code class='sample' sample='code/fusion.callbacks.cpp#make_event_system'></code></pre>
 
 ----
 
-### When that's the case, a dynamic graph may be suboptimal
+### After
+
+<pre><code class='sample' sample='code/hana.callbacks.cpp#make_event_system'></code></pre>
 
 ----
 
-### Let's do it at compile-time, then!
+### Before
 
-<pre><code class='sample' sample='code/hana.graph.cpp#usage'></code></pre>
-
-Note:
-- All tasks and their dependencies are known at compile-time
+<pre><code class='sample' sample='code/fusion.callbacks.cpp#struct'></code></pre>
 
 ----
 
-TODO: Finish implementing this
+### After
+
+<pre><code class='sample' sample='code/hana.callbacks.cpp#struct'></code></pre>
+
+----
+
+### Before
+
+<pre><code class='sample' sample='code/fusion.callbacks.cpp#on'></code></pre>
+
+----
+
+### After
+
+<pre><code class='sample' sample='code/hana.callbacks.cpp#on'></code></pre>
+
+----
+
+### Before
+
+<pre><code class='sample' sample='code/fusion.callbacks.cpp#trigger'></code></pre>
+
+----
+
+### After
+
+<pre><code class='sample' sample='code/hana.callbacks.cpp#trigger'></code></pre>
 
 ==============================================================================
 
