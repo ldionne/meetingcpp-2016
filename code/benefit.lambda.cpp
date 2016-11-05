@@ -20,8 +20,9 @@ namespace hana = boost::hana;
 namespace mpl = boost::mpl;
 
 
+namespace mpl_example {
 // sample(mpl)
-using Types = mpl::vector<int, float const, char volatile, long const>;
+using Types = mpl::vector<int, bool const, char volatile, long const>;
 using CV_Types = mpl::copy_if<Types,
                     mpl::or_<std::is_volatile<mpl::_1>,
                              std::is_const<mpl::_1>>>::type;
@@ -29,20 +30,22 @@ using CV_Types = mpl::copy_if<Types,
 
 static_assert(mpl::equal<
   CV_Types,
-  mpl::vector<float const, char volatile, long const>
+  mpl::vector<bool const, char volatile, long const>
 >::value, "");
+}
 
 
-template <typename ...T>
-using typelist = hana::tuple<hana::type<T>...>;
-
+namespace hana_example {
 // sample(hana)
-auto Types = typelist<int, float const, char volatile, long const>{};
+auto Types = hana::tuple_t<int, bool const, char volatile, long const>;
 auto CV_Types = hana::filter(Types, [](auto t) {
   return hana::traits::is_volatile(t) || hana::traits::is_const(t);
 });
 // end-sample
 
-BOOST_HANA_CONSTANT_CHECK(CV_Types == typelist<float const, char volatile, long const>{});
+BOOST_HANA_CONSTANT_CHECK(
+  CV_Types == hana::tuple_t<bool const, char volatile, long const>
+);
+}
 
 int main() { }

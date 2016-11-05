@@ -65,9 +65,9 @@ using hana::type;
 
 // sample(typelist-sugar)
 template <typename ...T>
-using typelist = tuple<type<T>...>;
+constexpr auto tuple_t = tuple<type<T>...>{};
 
-constexpr auto Types = typelist<int, char, float, char, void>{};
+constexpr auto Types = tuple_t<int, char, float, char, void>;
 
 constexpr auto NoChar = hana::remove(Types, type<char>{});
 constexpr auto Uniqued = hana::unique(Types);

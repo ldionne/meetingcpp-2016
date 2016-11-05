@@ -10,19 +10,16 @@ namespace hana = boost::hana;
 using namespace std::literals;
 
 
-template <typename ...T>
-using typelist = hana::tuple<hana::type<T>...>;
-
 int main() {
 // sample(mpl)
-constexpr auto Types = typelist<int, void, char, long>{};
+constexpr auto Types = hana::tuple_t<int, void, char, long>;
 
 constexpr auto NoVoid = hana::remove_if(Types, hana::traits::is_void);
-static_assert(NoVoid == typelist<int, char, long>{}, "");
+static_assert(NoVoid == hana::tuple_t<int, char, long>, "");
 
 constexpr auto Pointers = hana::transform(Types,
                                           hana::traits::add_pointer);
-static_assert(Pointers == typelist<int*, void*, char*, long*>{}, "");
+static_assert(Pointers == hana::tuple_t<int*, void*, char*, long*>,"");
 // end-sample
 
 
