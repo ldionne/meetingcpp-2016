@@ -18,14 +18,10 @@ namespace std {
 namespace cpp14_sample {
 // sample(cpp14)
 template <typename T, typename = void>
-struct has_xxx
-  : std::false_type
-{ };
+struct has_xxx : std::false_type { };
 
 template <typename T>
-struct has_xxx<T, std::void_t<decltype(&T::xxx)>>
-  : std::true_type
-{ };
+struct has_xxx<T, std::void_t<decltype(&T::xxx)>> : std::true_type { };
 
 struct Foo { int xxx; };
 static_assert(has_xxx<Foo>::value, "");
