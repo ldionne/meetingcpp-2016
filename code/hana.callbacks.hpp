@@ -21,42 +21,42 @@ struct event_system {
 // end-sample
 
 // sample(on)
-  template <typename Event, typename F>
-  void on(Event e, F handler) {
-    auto is_known_event = hana::contains(map_, e);
-    static_assert(is_known_event,
-      "trying to add a handler to an unknown event");
+template <typename Event, typename F>
+void on(Event e, F handler) {
+  auto is_known_event = hana::contains(map_, e);
+  static_assert(is_known_event,
+    "trying to add a handler to an unknown event");
 
-    map_[e].push_back(handler);
-  }
+  map_[e].push_back(handler);
+}
 // end-sample
 
 // sample(trigger-runtime)
-  void trigger(std::string const& e) {
-    bool found = false;
-    hana::for_each(hana::keys(this->map_), [&](auto const& event) {
-      if (!found && hana::to<char const*>(event) == e) {
-        this->trigger(event);
-        found = true;
-      }
-    });
+void trigger(std::string const& e) {
+  bool found = false;
+  hana::for_each(hana::keys(this->map_), [&](auto const& event) {
+    if (!found && hana::to<char const*>(event) == e) {
+      this->trigger(event);
+      found = true;
+    }
+  });
 
-    assert(found && "triggering unknown event");
-  }
+  assert(found && "triggering unknown event");
+}
 // end-sample
 
 // sample(trigger)
-  template <typename Event>
-  void trigger(Event e) {
-    auto is_known_event = hana::contains(map_, e);
-    static_assert(is_known_event,
-      "trying to trigger an unknown event");
+template <typename Event>
+void trigger(Event e) {
+  auto is_known_event = hana::contains(map_, e);
+  static_assert(is_known_event,
+    "trying to trigger an unknown event");
 
-    for (auto& handler : this->map_[e])
-      handler();
-  }
-};
+  for (auto& handler : this->map_[e])
+    handler();
+}
 // end-sample
+};
 
 // sample(make_event_system)
 template <typename ...Events>

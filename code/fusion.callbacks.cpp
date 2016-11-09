@@ -19,32 +19,32 @@ struct event_system {
 // end-sample
 
 // sample(is_known_event)
-  template <typename Event>
-  static constexpr bool is_known_event =
-    fusion::result_of::has_key<EventMap, Event>::value;
+template <typename Event>
+static constexpr bool is_known_event =
+  fusion::result_of::has_key<EventMap, Event>::value;
 // end-sample
 
 // sample(on)
-  template <typename Event, typename F>
-  void on(F handler) {
-    static_assert(is_known_event<Event>,
-      "trying to add a handler to an unknown event");
+template <typename Event, typename F>
+void on(F handler) {
+  static_assert(is_known_event<Event>,
+    "trying to add a handler to an unknown event");
 
-    fusion::at_key<Event>(map_).push_back(handler);
-  }
+  fusion::at_key<Event>(map_).push_back(handler);
+}
 // end-sample
 
 // sample(trigger)
-  template <typename Event>
-  void trigger() {
-    static_assert(is_known_event<Event>,
-      "trying to trigger an unknown event");
+template <typename Event>
+void trigger() {
+  static_assert(is_known_event<Event>,
+    "trying to trigger an unknown event");
 
-    for (auto& handler : fusion::at_key<Event>(map_))
-      handler();
-  }
-};
+  for (auto& handler : fusion::at_key<Event>(map_))
+    handler();
+}
 // end-sample
+};
 
 // sample(make_event_system)
 template <typename ...Events>

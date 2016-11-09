@@ -18,34 +18,34 @@ struct event_system {
 // end-sample
 
 // sample(constructor)
-  explicit event_system(std::initializer_list<Event> events) {
-    for (auto const& event : events)
-      map_.insert({event, {}});
-  }
+explicit event_system(std::initializer_list<Event> events) {
+  for (auto const& event : events)
+    map_.insert({event, {}});
+}
 // end-sample
 
 // sample(on)
-  template <typename F>
-  void on(Event const& event, F handler) {
-    auto callbacks = map_.find(event);
-    assert(callbacks != map_.end() &&
-      "trying to add a handler to an unknown event");
+template <typename F>
+void on(Event const& event, F handler) {
+  auto callbacks = map_.find(event);
+  assert(callbacks != map_.end() &&
+    "trying to add a handler to an unknown event");
 
-    callbacks->second.push_back(handler);
-  }
+  callbacks->second.push_back(handler);
+}
 // end-sample
 
 // sample(trigger)
-  void trigger(Event const& event) {
-    auto callbacks = map_.find(event);
-    assert(callbacks != map_.end() &&
-      "trying to trigger an unknown event");
+void trigger(Event const& event) {
+  auto callbacks = map_.find(event);
+  assert(callbacks != map_.end() &&
+    "trying to trigger an unknown event");
 
-    for (auto& handler : callbacks->second)
-      handler();
-  }
-};
+  for (auto& handler : callbacks->second)
+    handler();
+}
 // end-sample
+};
 
 // sample(usage)
 int main() {
