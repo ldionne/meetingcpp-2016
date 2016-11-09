@@ -844,6 +844,8 @@ auto tuple = hana::tuple{std::array{4, 5, 6, 7, 8}, 1, ’2’, 3.3};
 using sorted = decltype(hana::sort(tuple, [](auto a, auto b) {
   return constant<sizeof(a) < sizeof(b)>{};
 }));
+
+// sorted is tuple<char, int, double, array<int, 5>>
 ```
 
 ====================
@@ -853,22 +855,116 @@ using sorted = decltype(hana::sort(tuple, [](auto a, auto b) {
 ----
 
 ### Reflection
+#### (not for C++17)
 
 ----
 
-### Reflection: as proposed
+### Consider serialization to JSON
 
-TODO
+```c++
+struct point { float x, y, z; };
+struct triangle { point a, b, c; };
+
+struct tetrahedron {
+  triangle base;
+  point apex;
+};
+
+int main() {
+  tetrahedron t{
+    {{0.f,0.f,0.f}, {1.f,0.f,0.f}, {0.f,0.f,1.f}},
+    {0.f,1.f,0.f}
+  };
+
+  to_json(std::cout, t);
+}
+```
 
 ----
 
-### Reflection: what I would like
+### How to write this `to_json`?
 
-TODO
+----
+
+### As proposed
+
+```c++
+template <typename T>
+std::ostream& to_json(std::ostream& out, T const& v) {
+  typedef reflexpr(T) meta_T;
+  if constexpr (std::meta::Record<reflexpr(T)>{}) {
+    out << "{";
+    using Members = std::meta::get_data_members_m<reflexpr(T)>;
+    fields_to_json<Members>(out, v,
+      std::make_index_sequence<std::meta::get_size_v<Members>>{}
+    );
+    out << "}";
+  } else {
+    out << v;
+  }
+}
+```
+
+----
+
+### As proposed (cont.)
+
+```c++
+template <typename Metaobjects, std::size_t I, typename T>
+void field_to_json(std::ostream& out, const T& v) {
+  using Member = std::meta::get_element_m<Metaobjects, I>;
+  if (I > 0) out << ", ";
+  out << '"' << std::meta::get_base_name_v<Member> << "\": ";
+  to_json(out, (v.*std::meta::get_pointer_v<Member>));
+}
+
+template <typename Metaobjects, std::size_t ...I, typename T>
+void fields_to_json(std::ostream& out, T const& v,
+                    std::index_sequence<I...>)
+{
+  (field_to_json<Metaobjects, I>(out, v), ...);
+}
+```
+
+----
+
+### Hey, that's not too bad!
+
+----
+
+### What we could achieve with value syntax
+
+```c++
+template <typename T>
+std::ostream& to_json(std::ostream& out, T const& v) {
+  if constexpr(std::meta::Record<reflexpr(T)>{}) {
+    out << v;
+  } else {
+    out << "{";
+    auto members = reflexpr(T).members;
+    auto indices = hana::make_range(0_c, hana::length(members));
+    hana::for_each(indices, [&](auto i) {
+      if (i > 0) out << ", ";
+      out << '"' << members[i].name << "\": ";
+      to_json(out, v.*members[i].pointer);
+    });
+    out << '}';
+  }
+  return out;
+}
+```
 
 ====================
 
-### The future is looking bright
+## Metaprogramming is powerful
+
+----
+
+### Let's embrace and design it instead of avoiding it
+
+----
+
+## The future is looking bright
 
 ==============================================================================
 
