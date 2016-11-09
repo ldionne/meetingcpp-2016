@@ -740,7 +740,6 @@ Spend 30 minutes here
 - `auto` template parameters
 - `if constexpr`
 - constexpr lambdas
-- template argument deduction for class templates
 - structured bindings
 
 ----
@@ -757,92 +756,95 @@ Spend 30 minutes here
 
 ----
 
-### `auto` template parameters
+### Let's consider a few examples
+
+====================
+
+### Named parameters
+
+```c++
+template <typename ...Args>
+void create_window(Args ...args) {
+  int x = "x"_arg(args...);
+  int y = "y"_arg(args...);
+  int width = "width"_arg(args...);
+  int height = "height"_arg(args...);
+  // etc...
+}
+
+int main() {
+  create_window("x"_arg = 20, "y"_arg = 50,
+                "width"_arg = 100, "height"_arg = 5);
+}
+```
+
+----
+
+#### Literal operator template
+
+```c++
+template <char ...s>
+struct argument { ... };
+
+template <typename CharT, CharT ...s>
+constexpr argument<s...> operator"" _arg() { return {}; }
+```
+
+----
+
+#### Structured bindings
+#### `if constexpr`
+
+```c++
+template <char ...s>
+struct argument {
+  template <typename T>
+  constexpr std::pair<argument<s...>, T> operator=(T value) {
+    return {{}, value};
+  }
+
+  template <typename Arg, typename ...Args>
+  constexpr auto operator()(Arg arg, Args ...args) const {
+    auto [tag, value] = arg;
+    if constexpr (tag == *this) {
+      return value;
+    } else {
+      static_assert(sizeof...(Args) != 0, "missing argument");
+      return (*this)(args...);
+    }
+  }
+};
+```
+
+====================
+
+#### Familiar template syntax for lambdas
+
+```c++
+template <typename Types>
+void register(Types types) {
+  hana::for_each(types, []<typename T>(hana::type<T>) {
+    std::cout << "registering " << typeid(T).name() << std::endl;
+  });
+}
+```
+
+----
+
+#### Lambdas in unevaluated contexts
+#### Template argument deduction for class templates
+#### `auto` template parameters
 
 ```c++
 template <auto V>
-struct constant {
-  using value_type = decltype(V);
-  static constexpr value_type value = v;
-  using type = constant;
-  constexpr operator value_type() const noexcept { return value; }
-  constexpr value_type operator()() const noexcept { return value; }
-};
+struct constant { ... };
 
-// ... define operators as we did before
+auto tuple = hana::tuple{std::array{4, 5, 6, 7, 8}, 1, ’2’, 3.3};
 
-static_assert(constant<1>{} + constant<4>{} == constant<5>{}, "");
+using sorted = decltype(hana::sort(tuple, [](auto a, auto b) {
+  return constant<sizeof(a) < sizeof(b)>{};
+}));
 ```
-
-<!-- TODO: more convincing use of constant -->
-
-----
-
-### `if constexpr`
-
-<pre><code class='sample' sample='code/future.if.cpp#before'></code></pre>
-
-Becomes
-
-<pre><code class='sample' sample='code/future.if.cpp#after'></code></pre>
-
-Note:
-Here, SFINAE would not be sufficient if we wanted to have a more complex
-condition, such as an 'or' between two conditions or something like that.
-
-----
-
-### Constexpr lambdas
-
-<pre><code class='sample' sample='code/future.constexpr.cpp#before'></code></pre>
-
-Becomes
-
-<pre><code class='sample' sample='code/future.constexpr.cpp#after'></code></pre>
-
-<!-- TODO: find a better example -->
-
-----
-
-### Template argument deduction for class templates
-
-<pre><code class='sample' sample='code/future.deduction.cpp#before'></code></pre>
-
-Becomes
-
-<pre><code class='sample' sample='code/future.deduction.cpp#after'></code></pre>
-
-----
-
-### Structured bindings
-
-```c++
-TODO
-```
-
-Becomes
-
-```c++
-TODO
-```
-
-----
-
-### Lambdas in unevaluated contexts
-
-TODO
-
-----
-
-### Familiar template syntax for lambdas
-
-TODO
-
-----
-
-### Literal operator template for strings
-
-TODO
 
 ====================
 
