@@ -780,15 +780,15 @@ static_assert(constant<1>{} + constant<4>{} == constant<5>{}, "");
 
 ### `if constexpr`
 
-```c++
-TODO
-```
+<pre><code class='sample' sample='code/future.if.cpp#before'></code></pre>
 
 Becomes
 
-```c++
-TODO
-```
+<pre><code class='sample' sample='code/future.if.cpp#after'></code></pre>
+
+Note:
+Here, SFINAE would not be sufficient if we wanted to have a more complex
+condition, such as an 'or' between two conditions or something like that.
 
 ----
 
