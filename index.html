@@ -263,6 +263,9 @@ double a = ...;   // acceleration in m/s²
 double force = m * v; // What's wrong?
 ```
 
+<!-- TODO: Reconsider this example; it's a bit obscure, it's long and it can
+           be done with std::integer_sequence -->
+
 ----
 
 ### Solution? Attach units to quantities!
@@ -734,11 +737,10 @@ Spend 30 minutes here
 
 ### C++17 will give us
 
+- `auto` template parameters
 - `if constexpr`
 - constexpr lambdas
 - template argument deduction for class templates
-- `auto` template parameters
-- inline variables
 - structured bindings
 
 ----
@@ -746,8 +748,8 @@ Spend 30 minutes here
 ### C++20 may give us
 
 - lambdas in unevaluated contexts
-- literal operator template for strings
 - familiar template syntax for lambdas
+- literal operator template for strings
 
 ====================
 
@@ -755,27 +757,122 @@ Spend 30 minutes here
 
 ----
 
-### Let's go back to our graph example
+### `auto` template parameters
 
-<pre><code class='sample' sample='code/hana.graph.hpp#depends_on'></code></pre>
+```c++
+template <auto V>
+struct constant {
+  using value_type = decltype(V);
+  static constexpr value_type value = v;
+  using type = constant;
+  constexpr operator value_type() const noexcept { return value; }
+  constexpr value_type operator()() const noexcept { return value; }
+};
+
+// ... define operators as we did before
+
+static_assert(constant<1>{} + constant<4>{} == constant<5>{}, "");
+```
+
+<!-- TODO: more convincing use of constant -->
+
+----
+
+### `if constexpr`
+
+```c++
+TODO
+```
 
 Becomes
 
-<pre><code class='sample' sample='code/hana.graph.hpp#depends_on-cpp17'></code></pre>
+```c++
+TODO
+```
 
 ----
 
-### We could mark all the functions `constexpr`
+### Constexpr lambdas
 
-<pre><code class='sample' sample='code/hana.graph.cpp#constexpr-usage'></code></pre>
+```c++
+TODO
+```
+
+Becomes
+
+```c++
+TODO
+```
 
 ----
 
-### No need for `make_graph` anymore
+### Template argument deduction for class templates
 
-<pre><code class='sample' sample='code/hana.graph.cpp#no-make_graph'></code></pre>
+```c++
+TODO
+```
 
-TODO: Finish the overview of the future
+Becomes
+
+```c++
+TODO
+```
+
+----
+
+### Structured bindings
+
+```c++
+TODO
+```
+
+Becomes
+
+```c++
+TODO
+```
+
+----
+
+### Lambdas in unevaluated contexts
+
+TODO
+
+----
+
+### Familiar template syntax for lambdas
+
+TODO
+
+----
+
+### Literal operator template for strings
+
+TODO
+
+====================
+
+### But most importantly
+
+----
+
+### Reflection
+
+----
+
+### Reflection: as proposed
+
+TODO
+
+----
+
+### Reflection: what I would like
+
+TODO
+
+====================
+
+### The future is looking bright
 
 ==============================================================================
 
