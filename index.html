@@ -937,18 +937,18 @@ void fields_to_json(std::ostream& out, T const& v,
 ```c++
 template <typename T>
 std::ostream& to_json(std::ostream& out, T const& v) {
-  if constexpr(std::meta::Record<reflexpr(T)>{}) {
-    out << v;
-  } else {
+  if constexpr (std::meta::Record(reflexpr(T))) {
     out << "{";
-    auto members = reflexpr(T).members;
-    auto indices = hana::make_range(0_c, hana::length(members));
+    auto members = reflexpr(T).members();
+    auto indices = hana::make_range(0_c, members.size());
     hana::for_each(indices, [&](auto i) {
       if (i > 0) out << ", ";
-      out << '"' << members[i].name << "\": ";
-      to_json(out, v.*members[i].pointer);
+      out << '"' << members[i].name() << "\": ";
+      to_json(out, v.*members[i].pointer());
     });
     out << '}';
+  } else {
+    out << v;
   }
   return out;
 }
