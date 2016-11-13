@@ -3,6 +3,13 @@
 
 // ~/code/llvm/build/prefix/bin/clang++ -I ~/code/hana/include -isystem ~/code/llvm/build/prefix/lib/clang/4.0.0/include -I ~/code/llvm/tools/clang/reflection -Xclang -freflection -std=c++1z code/reflection.cpp
 
+#if defined(__has_include)
+# if __has_include(<reflexpr>)
+#   define HAS_REFLECTION
+# endif
+#endif
+
+#ifdef HAS_REFLECTION
 #include <boost/hana.hpp>
 
 #include <iostream>
@@ -72,10 +79,9 @@ struct reflexpr_wrapper {
 };
 
 
-
 template <typename T>
 std::ostream& to_json(std::ostream& out, T const& v) {
-  if constexpr(std::meta::Record<reflexpr(T)>) {
+  if constexpr (std::meta::Record<reflexpr(T)>) {
     out << "{";
     auto members = reflexpr_<T>.members();
     auto indices = hana::make_range(0_c, members.size());
@@ -90,7 +96,6 @@ std::ostream& to_json(std::ostream& out, T const& v) {
   }
   return out;
 }
-
 
 struct point { float x, y, z; };
 struct triangle { point a, b, c; };
@@ -108,3 +113,7 @@ int main() {
 
   to_json(std::cout, t);
 }
+
+#else
+int main() { }
+#endif
