@@ -633,69 +633,83 @@ After
 
 ====================
 
+<!-- .slide: data-state="end-sbs" -->
+
 ### Let's Hana-ify the event system
 
 ----
 
+<!-- .slide: data-state="ensure-sbs" -->
+
 <div id="left">
-<h3>Before</h3>
+<h2>Before</h2>
 <pre><code class='sample' sample='code/fusion.callbacks.cpp#usage'></code></pre>
 </div>
 
 <div id="right">
-<h3>After</h3>
+<h2>After</h2>
 <pre><code class='sample' sample='code/hana.callbacks.cpp#usage'></code></pre>
 </div>
 
 ----
 
+<!-- .slide: data-state="ensure-sbs" -->
+
 <div id="left">
-<h3>Before</h3>
+<h2>Before</h2>
 <pre><code class='sample' sample='code/fusion.callbacks.cpp#make_event_system'></code></pre>
 </div>
 
 <div id="right">
-<h3>After</h3>
+<h2>After</h2>
 <pre><code class='sample' sample='code/hana.callbacks.hpp#make_event_system'></code></pre>
 </div>
 
 ----
 
+<!-- .slide: data-state="ensure-sbs" -->
+
 <div id="left">
-<h3>Before</h3>
+<h2>Before</h2>
 <pre><code class='sample' sample='code/fusion.callbacks.cpp#struct'></code></pre>
 </div>
 
 <div id="right">
-<h3>After</h3>
+<h2>After</h2>
 <pre><code class='sample' sample='code/hana.callbacks.hpp#struct'></code></pre>
 </div>
 
 ----
 
+<!-- .slide: data-state="ensure-sbs" -->
+
 <div id="left">
-<h3>Before</h3>
+<h2>Before</h2>
 <pre><code class='sample' sample='code/fusion.callbacks.cpp#on'></code></pre>
 </div>
 
 <div id="right">
-<h3>After</h3>
+<h2>After</h2>
 <pre><code class='sample' sample='code/hana.callbacks.hpp#on'></code></pre>
 </div>
 
 ----
 
+<!-- .slide: data-state="ensure-sbs" -->
+
 <div id="left">
-<h3>Before</h3>
+<h2>Before</h2>
 <pre><code class='sample' sample='code/fusion.callbacks.cpp#trigger'></code></pre>
 </div>
 
 <div id="left">
-<h3>After</h3>
+<h2>After</h2>
 <pre><code class='sample' sample='code/hana.callbacks.hpp#trigger'></code></pre>
 </div>
 
 ----
+
+<!-- .slide: data-state="end-sbs" -->
 
 ### What if the event to trigger can be decided at runtime?
 
@@ -1003,6 +1017,19 @@ http://github.com/boostorg/hana
                     { src: 'plugin/line-numbers/line-numbers.js' }
                 ]
             });
+
+            // By marking a slide with <!-- .slide: data-state="ensure-sbs" -->,
+            // the presentation is re-scaled so that two side-by-side code
+            // snippets can fit. By using data-state="end-sbs", the
+            // presentation is scaled back to its original width.
+            // This is super hacky, but I suck at JavaScript.
+            Reveal.addEventListener('ensure-sbs', function() {
+              Reveal.configure({ width: '165%' });
+            }, false);
+
+            Reveal.addEventListener('end-sbs', function() {
+              Reveal.configure({ width: 960 });
+            }, false);
         </script>
     </body>
 </html>
