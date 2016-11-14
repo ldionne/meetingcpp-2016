@@ -14,10 +14,14 @@ namespace hana = boost::hana;
 using namespace hana::literals;
 
 
+template <typename ...Pairs>
+using map = decltype(hana::make_map(std::declval<Pairs>()...));
+
 // sample(struct)
-template <typename EventMap>
+template <typename ...Events>
 struct event_system {
-  EventMap map_;
+  using Callbacks = std::function<void()>;
+  map<hana::pair<Events, std::vector<Callback>>...> map_;
 // end-sample
 
 // sample(on)
@@ -58,15 +62,10 @@ void trigger(Event e) {
 // end-sample
 };
 
-// sample(make_event_system)
+// sample(constructor)
 template <typename ...Events>
-auto make_event_system(Events ...events) {
-  using Callbacks = std::vector<std::function<void()>>;
-  using Map = decltype(hana::make_map(
-    hana::make_pair(events, Callbacks{})...
-  ));
-
-  return event_system<Map>{};
+event_system<Events...> make_event_system(Events ...events) {
+  return {};
 }
 // end-sample
 

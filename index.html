@@ -341,35 +341,7 @@ used at runtime (which is what we're interested in at the end).
 
 ----
 
-### Let's consider a simple event system
-
-<pre><code class='sample' sample='code/fusion.callbacks.cpp#usage'></code></pre>
-
-Note:
-- All events are known at compile-time
-- We always know what event to trigger at compile-time
-- Should be 0 overhead for event trigger
-- We should catch errors at compile-time
-
-----
-
-<pre><code class='sample' sample='code/fusion.callbacks.cpp#make_event_system'></code></pre>
-
-----
-
-<pre><code class='sample' sample='code/fusion.callbacks.cpp#struct'></code></pre>
-
-----
-
-<pre><code class='sample' sample='code/fusion.callbacks.cpp#on'></code></pre>
-
-----
-
-<pre><code class='sample' sample='code/fusion.callbacks.cpp#is_known_event'></code></pre>
-
-----
-
-<pre><code class='sample' sample='code/fusion.callbacks.cpp#trigger'></code></pre>
+TODO: Find a new example for Fusion
 
 ====================
 
@@ -633,22 +605,37 @@ After
 
 ====================
 
+### Let's consider a simple event system
+
+<pre><code class='sample' sample='code/callbacks.cpp#usage'></code></pre>
+
+----
+
+### What if
+
+- All events are known at compile-time
+- We always know what event to trigger at compile-time
+
+----
+
 <!-- .slide: data-state="end-sbs" -->
 
-### Let's Hana-ify the event system
+### Could we do better?
 
-----
-
-<!-- .slide: data-state="ensure-sbs" -->
-
-<div id="left">
-<h2>Before</h2>
-<pre><code class='sample' sample='code/fusion.callbacks.cpp#usage'></code></pre>
-</div>
-
-<div id="right">
-<h2>After</h2>
 <pre><code class='sample' sample='code/hana.callbacks.cpp#usage'></code></pre>
+
+----
+
+<!-- .slide: data-state="ensure-sbs" -->
+
+<div id="left">
+<h2>Runtime</h2>
+<pre><code class='sample' sample='code/callbacks.cpp#constructor'></code></pre>
+</div>
+
+<div id="right">
+<h2>Compile-time</h2>
+<pre><code class='sample' sample='code/hana.callbacks.hpp#constructor'></code></pre>
 </div>
 
 ----
@@ -656,26 +643,12 @@ After
 <!-- .slide: data-state="ensure-sbs" -->
 
 <div id="left">
-<h2>Before</h2>
-<pre><code class='sample' sample='code/fusion.callbacks.cpp#make_event_system'></code></pre>
+<h2>Runtime</h2>
+<pre><code class='sample' sample='code/callbacks.cpp#struct'></code></pre>
 </div>
 
 <div id="right">
-<h2>After</h2>
-<pre><code class='sample' sample='code/hana.callbacks.hpp#make_event_system'></code></pre>
-</div>
-
-----
-
-<!-- .slide: data-state="ensure-sbs" -->
-
-<div id="left">
-<h2>Before</h2>
-<pre><code class='sample' sample='code/fusion.callbacks.cpp#struct'></code></pre>
-</div>
-
-<div id="right">
-<h2>After</h2>
+<h2>Compile-time</h2>
 <pre><code class='sample' sample='code/hana.callbacks.hpp#struct'></code></pre>
 </div>
 
@@ -684,12 +657,12 @@ After
 <!-- .slide: data-state="ensure-sbs" -->
 
 <div id="left">
-<h2>Before</h2>
-<pre><code class='sample' sample='code/fusion.callbacks.cpp#on'></code></pre>
+<h2>Runtime</h2>
+<pre><code class='sample' sample='code/callbacks.cpp#on'></code></pre>
 </div>
 
 <div id="right">
-<h2>After</h2>
+<h2>Compile-time</h2>
 <pre><code class='sample' sample='code/hana.callbacks.hpp#on'></code></pre>
 </div>
 
@@ -698,12 +671,12 @@ After
 <!-- .slide: data-state="ensure-sbs" -->
 
 <div id="left">
-<h2>Before</h2>
-<pre><code class='sample' sample='code/fusion.callbacks.cpp#trigger'></code></pre>
+<h2>Runtime</h2>
+<pre><code class='sample' sample='code/callbacks.cpp#trigger'></code></pre>
 </div>
 
 <div id="left">
-<h2>After</h2>
+<h2>Compile-time</h2>
 <pre><code class='sample' sample='code/hana.callbacks.hpp#trigger'></code></pre>
 </div>
 
@@ -715,11 +688,7 @@ After
 
 ----
 
-### With Fusion, you're stuck
-
-----
-
-### With Hana, you're not
+### It's easy
 
 <pre><code class='sample' sample='code/hana.callbacks.runtime.cpp#usage'></code></pre>
 
@@ -732,6 +701,12 @@ After
 Note:
 This is what I meant by "Seamless integration of compile-time and runtime"
 TODO: Better approach is to hash the std::string and then use a switch on the hashes of the known events
+
+----
+
+### But does it actually matter?
+
+TODO: Show runtime benchmark of runtime vs compile-time dispatch
 
 ==============================================================================
 
@@ -1024,7 +999,7 @@ http://github.com/boostorg/hana
             // presentation is scaled back to its original width.
             // This is super hacky, but I suck at JavaScript.
             Reveal.addEventListener('ensure-sbs', function() {
-              Reveal.configure({ width: '165%' });
+              Reveal.configure({ width: '150%' });
             }, false);
 
             Reveal.addEventListener('end-sbs', function() {
