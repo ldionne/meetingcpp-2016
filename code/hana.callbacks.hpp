@@ -20,7 +20,7 @@ using map = decltype(hana::make_map(std::declval<Pairs>()...));
 // sample(struct)
 template <typename ...Events>
 struct event_system {
-  using Callbacks = std::function<void()>;
+  using Callback = std::function<void()>;
   map<hana::pair<Events, std::vector<Callback>>...> map_;
 // end-sample
 
@@ -36,7 +36,7 @@ void on(Event e, F handler) {
 // end-sample
 
 // sample(trigger-runtime)
-void trigger(std::string const& e) {
+void trigger(std::string const& e) const {
   bool found = false;
   hana::for_each(hana::keys(this->map_), [&](auto const& event) {
     if (!found && hana::to<char const*>(event) == e) {
@@ -51,7 +51,7 @@ void trigger(std::string const& e) {
 
 // sample(trigger)
 template <typename Event>
-void trigger(Event e) {
+void trigger(Event e) const {
   auto is_known_event = hana::contains(map_, e);
   static_assert(is_known_event,
     "trying to trigger an unknown event");

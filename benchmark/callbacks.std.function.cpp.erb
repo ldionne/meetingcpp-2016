@@ -1,0 +1,28 @@
+// Copyright Louis Dionne 2016
+// Distributed under the Boost Software License, Version 1.0.
+
+#include "../code/callbacks.hpp"
+#include <string>
+
+
+<% (1..env[:maxn]).each do |i| %>
+std::function<void()> callback<%=i%>;
+<% end %>
+
+__attribute__((noinline)) void loop() {
+  for (unsigned long long i = 0; i < <%= env[:iterations] %>; ++i) {
+    <% (1..n).each do |i| %>
+      callback<%=i%>();
+    <% end %>
+  }
+}
+
+int main() {
+  <% (1..env[:maxn]).each do |i| %>
+    callback<%=i%> = []{};
+  <% end %>
+
+#if defined(METABENCH)
+  loop();
+#endif
+}

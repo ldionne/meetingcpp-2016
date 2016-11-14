@@ -1,0 +1,32 @@
+// Copyright Louis Dionne 2016
+// Distributed under the Boost Software License, Version 1.0.
+
+#include "../code/hana.callbacks.hpp"
+#include <string>
+namespace hana = boost::hana;
+using namespace hana::literals;
+using namespace std::literals;
+
+
+template <typename Events>
+__attribute__((noinline)) void loop(Events const& events) {
+  for (unsigned long long i = 0; i < <%= env[:iterations] %>; ++i) {
+    <% (1..n).each do |i| %>
+      events.trigger("event<%=i%>"s);
+    <% end %>
+  }
+}
+
+int main() {
+  auto events = make_event_system(
+    <%= (1..env[:maxn]).map { |i| "\"event#{i}\"_s" }.join(', ') %>
+  );
+
+  <% (1..env[:maxn]).each do |i| %>
+    events.on("event<%=i%>"_s, []{});
+  <% end %>
+
+#if defined(METABENCH)
+  loop(events);
+#endif
+}

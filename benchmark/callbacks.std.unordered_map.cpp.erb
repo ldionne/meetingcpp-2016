@@ -1,0 +1,29 @@
+// Copyright Louis Dionne 2016
+// Distributed under the Boost Software License, Version 1.0.
+
+#include "../code/callbacks.hpp"
+#include <string>
+
+
+template <typename Events>
+__attribute__((noinline)) void loop(Events const& events) {
+  for (unsigned long long i = 0; i < <%= env[:iterations] %>; ++i) {
+    <% (1..n).each do |i| %>
+      events.trigger("event<%=i%>");
+    <% end %>
+  }
+}
+
+int main() {
+  event_system<std::string> events{{
+    <%= (1..env[:maxn]).map { |i| "\"event#{i}\"" }.join(', ') %>
+  }};
+
+  <% (1..env[:maxn]).each do |i| %>
+    events.on("event<%=i%>", []{});
+  <% end %>
+
+#if defined(METABENCH)
+  loop(events);
+#endif
+}

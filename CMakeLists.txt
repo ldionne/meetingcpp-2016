@@ -2,6 +2,7 @@
 # Distributed under the Boost Software License, Version 1.0.
 
 cmake_minimum_required(VERSION 3.0)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR})
 
 #=============================================================================
 # Setup required packages
@@ -60,11 +61,44 @@ foreach(_file IN LISTS CODE_SAMPLES)
     file(RELATIVE_PATH _target ${CMAKE_CURRENT_SOURCE_DIR}/code ${_file})
     string(REPLACE ".cpp" "" _target "${_target}")
     add_executable(sample.${_target} "${_file}")
+    target_compile_options(sample.${_target} PRIVATE -O3)
     add_dependencies(samples sample.${_target})
     add_test(sample.${_target} sample.${_target})
 endforeach()
 
+
+#=============================================================================
+# Setup benchmarks
+#=============================================================================
+include(metabench)
+add_custom_target(benchmarks)
+
+foreach(target hana hana.runtime std.function std.unordered_map)
+    metabench_add_dataset(benchmark.callbacks.${target}
+        benchmark/callbacks.${target}.cpp.erb
+        "[1, 2, 4, 6, 8, 10]"
+        ENV "{maxn: 10, iterations: 10_000_000}")
+    target_compile_options(benchmark.callbacks.${target} PRIVATE -O3)
+endforeach()
+
+metabench_add_chart(benchmark.callbacks
+    DATASETS benchmark.callbacks.hana
+             benchmark.callbacks.std.function
+             benchmark.callbacks.std.unordered_map
+    ASPECT EXECUTION_TIME
+    XLABEL "Number of events triggered (x 10M)"
+    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/benchmark/callbacks.html)
+
+metabench_add_chart(benchmark.callbacks.runtime
+    DATASETS benchmark.callbacks.hana.runtime
+             benchmark.callbacks.std.unordered_map
+    ASPECT EXECUTION_TIME
+    XLABEL "Number of events triggered (x 10M)"
+    OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/benchmark/callbacks.runtime.html)
+
+add_dependencies(benchmarks benchmark.callbacks benchmark.callbacks.runtime)
+
 add_custom_target(check ALL
     COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
-    DEPENDS samples
+    DEPENDS samples benchmarks
     COMMENT "Build all the samples and then run them.")
