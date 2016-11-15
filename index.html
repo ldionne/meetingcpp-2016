@@ -702,13 +702,18 @@ After
 
 ----
 
-### Just overload `trigger`!
+### First, maintain a dynamic map
+
+<pre><code class='sample' sample='code/hana.callbacks.hpp#construct-runtime'></code></pre>
+
+----
+
+### Then, overload `trigger`!
 
 <pre><code class='sample' sample='code/hana.callbacks.hpp#trigger-runtime'></code></pre>
 
 Note:
 This is what I meant by "Seamless integration of compile-time and runtime"
-TODO: Better approach is to hash the std::string and then use a switch on the hashes of the known events
 
 ----
 

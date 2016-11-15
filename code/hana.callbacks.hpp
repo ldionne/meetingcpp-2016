@@ -9,6 +9,8 @@
 
 #include <cassert>
 #include <functional>
+#include <string>
+#include <unordered_map>
 #include <vector>
 namespace hana = boost::hana;
 using namespace hana::literals;
@@ -35,17 +37,24 @@ void on(Event e, F handler) {
 }
 // end-sample
 
+// sample(construct-runtime)
+std::unordered_map<std::string, std::vector<Callback>*> dynamic_;
+
+event_system() {
+  hana::for_each(hana::keys(map_), [&](auto event) {
+    dynamic_.insert({hana::to<char const*>(event), &map_[event]});
+  });
+}
+//end-sample
+
 // sample(trigger-runtime)
 void trigger(std::string const& e) const {
-  bool found = false;
-  hana::for_each(hana::keys(this->map_), [&](auto const& event) {
-    if (!found && hana::to<char const*>(event) == e) {
-      this->trigger(event);
-      found = true;
-    }
-  });
+  auto callbacks = dynamic_.find(e);
+  assert(callbacks != dynamic_.end() &&
+    "trying to trigger an unknown event");
 
-  assert(found && "triggering unknown event");
+  for (auto& handler : *callbacks->second)
+    handler();
 }
 // end-sample
 
