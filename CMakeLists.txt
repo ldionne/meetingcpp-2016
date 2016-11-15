@@ -66,6 +66,11 @@ foreach(_file IN LISTS CODE_SAMPLES)
     add_test(sample.${_target} sample.${_target})
 endforeach()
 
+add_custom_target(check ALL
+    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
+    DEPENDS samples
+    COMMENT "Build all the samples and then run them.")
+
 
 #=============================================================================
 # Setup benchmarks
@@ -97,8 +102,3 @@ metabench_add_chart(benchmark.callbacks.runtime
     OUTPUT ${CMAKE_CURRENT_SOURCE_DIR}/benchmark/callbacks.runtime.html)
 
 add_dependencies(benchmarks benchmark.callbacks benchmark.callbacks.runtime)
-
-add_custom_target(check ALL
-    COMMAND ${CMAKE_CTEST_COMMAND} --output-on-failure
-    DEPENDS samples benchmarks
-    COMMENT "Build all the samples and then run them.")

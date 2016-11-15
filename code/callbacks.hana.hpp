@@ -1,8 +1,8 @@
 // Copyright Louis Dionne 2016
 // Distributed under the Boost Software License, Version 1.0.
 
-#ifndef CODE_HANA_CALLBACKS_HPP
-#define CODE_HANA_CALLBACKS_HPP
+#ifndef CODE_CALLBACKS_HANA_HPP
+#define CODE_CALLBACKS_HANA_HPP
 
 #define BOOST_HANA_CONFIG_ENABLE_STRING_UDL
 #include <boost/hana.hpp>

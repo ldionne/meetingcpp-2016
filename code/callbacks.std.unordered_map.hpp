@@ -1,8 +1,8 @@
 // Copyright Louis Dionne 2016
 // Distributed under the Boost Software License, Version 1.0.
 
-#ifndef CODE_CALLBACKS_HPP
-#define CODE_CALLBACKS_HPP
+#ifndef CODE_CALLBACKS_STD_UNORDERED_MAP_HPP
+#define CODE_CALLBACKS_STD_UNORDERED_MAP_HPP
 
 #include <cassert>
 #include <functional>

@@ -1,7 +1,7 @@
 // Copyright Louis Dionne 2016
 // Distributed under the Boost Software License, Version 1.0.
 
-#include "hana.callbacks.hpp"
+#include "callbacks.hana.hpp"
 
 #include <iostream>
 #include <string>
