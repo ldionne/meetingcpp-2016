@@ -16,14 +16,11 @@ namespace hana = boost::hana;
 using namespace hana::literals;
 
 
-template <typename ...Pairs>
-using map = decltype(hana::make_map(std::declval<Pairs>()...));
-
 // sample(struct)
 template <typename ...Events>
 struct event_system {
   using Callback = std::function<void()>;
-  map<hana::pair<Events, std::vector<Callback>>...> map_;
+  hana::map<hana::pair<Events, std::vector<Callback>>...> map_;
 // end-sample
 
 // sample(on)
@@ -42,7 +39,7 @@ std::unordered_map<std::string, std::vector<Callback>*> dynamic_;
 
 event_system() {
   hana::for_each(hana::keys(map_), [&](auto event) {
-    dynamic_.insert({hana::to<char const*>(event), &map_[event]});
+    dynamic_.insert({event.c_str(), &map_[event]});
   });
 }
 //end-sample
