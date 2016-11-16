@@ -61,10 +61,19 @@ auto operator/(quantity<D1> a, quantity<D2> b) {
   using D = typename mpl::transform<D1, D2, mpl::minus<>>::type;
   return quantity<D>{static_cast<double>(a) / static_cast<double>(b)};
 }
+
+template <typename D1, typename D2>
+auto operator+(quantity<D1> a, quantity<D2> b) {
+  static_assert(compatible<D1, D2>,
+    "Adding quantities with incompatible dimensions!");
+  return quantity<D1>{static_cast<double>(a) + static_cast<double>(b)};
+}
+
+// etc..
 // end-sample
 
 #if 0
-// sample(quantity)
+// sample(usage)
 quantity<mass>         m{10.3};
 quantity<length>       d{3.6};
 quantity<time>         t{2.4};
@@ -82,4 +91,6 @@ int main() {
   quantity<velocity>     v{d / t};
   quantity<acceleration> a{3.9};
   quantity<force>        f{m * a};
+
+  quantity<force> f2 = f + f;
 }
