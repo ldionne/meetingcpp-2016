@@ -8,9 +8,18 @@ namespace hana = boost::hana;
 
 namespace classic {
 // sample(classic)
-using IntPtr = std::add_pointer<int>::type;
+template <typename T>
+struct add_pointer { using type = T*; };
 
-static_assert(std::is_same<IntPtr, int*>::value, "");
+template <typename T, typename U>
+struct is_same : std::false_type { };
+
+template <typename T>
+struct is_same<T, T> : std::true_type { };
+
+
+using IntPtr = add_pointer<int>::type;
+static_assert(is_same<IntPtr, int*>::value, "");
 // end-sample
 }
 
@@ -35,7 +44,7 @@ operator==(type<T> const&, type<T> const&)
 { return {}; }
 // end-sample
 
-// sample(use-operators)
+// sample(usage-operators)
 constexpr auto IntPtr = add_pointer(type<int>{});
 
 static_assert(IntPtr == type<int*>{}, "");
