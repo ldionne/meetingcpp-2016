@@ -72,18 +72,20 @@ constexpr auto operator"" _c() {
   return integral_constant<int, number>{};
 }
 
+// end-sample sample(use-operators-3) sample(after)
 static_assert(1_c + 4_c == 5_c, "");
 // end-sample
 
 // sample(classic)
 template <typename X, typename Y>
-struct plus {
-  using type = integral_constant<
-    decltype(X::value + Y::value),
-    X::value + Y::value
-  >;
+struct plus;
+
+template <typename T, T x, T y>
+struct plus<integral_constant<T, x>, integral_constant<T, y>> {
+  using type = integral_constant<T, x + y>;
 };
 
+// end-sample sample(before) sample(classic)
 static_assert(std::is_same<
   plus<integral_constant<int, 1>, integral_constant<int, 4>>::type,
   integral_constant<int, 5>
