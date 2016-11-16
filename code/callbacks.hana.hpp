@@ -35,7 +35,7 @@ void on(Event e, F handler) {
 // end-sample
 
 // sample(construct-runtime)
-std::unordered_map<std::string, std::vector<Callback>*> dynamic_;
+std::unordered_map<std::string, std::vector<Callback>* const> dynamic_;
 
 event_system() {
   hana::for_each(hana::keys(map_), [&](auto event) {

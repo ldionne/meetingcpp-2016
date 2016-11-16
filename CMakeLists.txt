@@ -83,7 +83,7 @@ foreach(target hana hana.runtime std.function std.unordered_map)
         benchmark/callbacks.${target}.cpp.erb
         "[1, 2, 4, 6, 8, 10]"
         ENV "{maxn: 10, iterations: 10_000_000}")
-    target_compile_options(benchmark.callbacks.${target} PRIVATE -O3)
+    target_compile_options(benchmark.callbacks.${target} PRIVATE -O3 -flto)
 endforeach()
 
 metabench_add_chart(benchmark.callbacks
