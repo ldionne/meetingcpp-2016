@@ -29,7 +29,8 @@ struct Matrix { /* ... */ };
 // end-sample
 #endif
 
-// sample(main)
+
+// sample(def)
 template <typename E1, typename E2>
 struct Sum {
   E1 const& left_;
@@ -42,7 +43,9 @@ struct Sum {
 template <typename Left, typename Right>
 Sum<Left, Right> operator+(Left const& left, Right const& right)
 { return {left, right}; }
+// end-sample
 
+// sample(usage)
 int main() {
   Matrix<int> m1{{ 1,  2,  3}, { 4,  5,  6}, { 7,  8,  9}};
   Matrix<int> m2{{11, 12, 13}, {14, 15, 16}, {17, 18, 19}};
