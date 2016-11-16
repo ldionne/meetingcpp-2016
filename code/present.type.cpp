@@ -60,11 +60,6 @@ using hana::type;
 constexpr auto Types = tuple<
   type<int>, type<char>, type<float>, type<char>, type<void>
 >{};
-
-constexpr auto NoChar = hana::remove(Types, type<char>{});
-constexpr auto Uniqued = hana::unique(Types);
-constexpr auto Reversed = hana::reverse(Types);
-// etc...
 // end-sample
 }
 
@@ -77,11 +72,6 @@ template <typename ...T>
 constexpr auto tuple_t = tuple<type<T>...>{};
 
 constexpr auto Types = tuple_t<int, char, float, char, void>;
-
-constexpr auto NoChar = hana::remove(Types, type<char>{});
-constexpr auto Uniqued = hana::unique(Types);
-constexpr auto Reversed = hana::reverse(Types);
-// etc...
 // end-sample
 }
 
