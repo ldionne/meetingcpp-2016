@@ -634,6 +634,11 @@ After
 
 ====================
 
+### But why would we ever want this?
+### I mean, really?
+
+----
+
 ### Let's consider a simple event system
 
 <pre><code class='sample' sample='code/callbacks.std.unordered_map.cpp#usage'></code></pre>
@@ -720,10 +725,6 @@ After
 ----
 
 ### What if the event to trigger can be decided at runtime?
-
-----
-
-### It's easy
 
 <pre><code class='sample' sample='code/callbacks.hana.runtime.cpp#usage'></code></pre>
 
@@ -884,7 +885,10 @@ using sorted = decltype(hana::sort(tuple, [](auto a, auto b) {
 
 ----
 
-### Reflection
+## Reflection
+
+Note:
+Reflection != metaprogramming, but they're closely related
 
 ----
 
@@ -991,11 +995,12 @@ std::ostream& to_json(std::ostream& out, T const& v) {
 
 ----
 
-### Let's embrace and design it instead of avoiding it
+### We need more metaprogramming
+### But less _template_ &nbsp; metaprogramming
 
 ----
 
-## The future is looking bright
+### Let's embrace this reality instead of avoiding it
 
 ==============================================================================
 
