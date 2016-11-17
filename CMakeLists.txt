@@ -24,7 +24,36 @@ ExternalProject_Add(install-Hana EXCLUDE_FROM_ALL 1
 ExternalProject_Get_Property(install-Hana SOURCE_DIR)
 include_directories(${SOURCE_DIR}/include)
 
-add_custom_target(install-dependencies DEPENDS install-Hana)
+include(ExternalProject)
+ExternalProject_Add(install-Brigand EXCLUDE_FROM_ALL 1
+    URL https://github.com/edouarda/brigand/archive/master.zip
+    TIMEOUT 120
+    PREFIX "${CMAKE_CURRENT_BINARY_DIR}/dependencies/brigand"
+    CONFIGURE_COMMAND "" # Disable configure step
+    BUILD_COMMAND ""     # Disable build step
+    INSTALL_COMMAND ""   # Disable install step
+    TEST_COMMAND ""      # Disable test step
+    UPDATE_COMMAND ""    # Disable source work-tree update
+)
+ExternalProject_Get_Property(install-Brigand SOURCE_DIR)
+include_directories(${SOURCE_DIR})
+
+include(ExternalProject)
+ExternalProject_Add(install-Metal EXCLUDE_FROM_ALL 1
+    URL https://github.com/brunocodutra/metal/archive/master.zip
+    TIMEOUT 120
+    PREFIX "${CMAKE_CURRENT_BINARY_DIR}/dependencies/metal"
+    CONFIGURE_COMMAND "" # Disable configure step
+    BUILD_COMMAND ""     # Disable build step
+    INSTALL_COMMAND ""   # Disable install step
+    TEST_COMMAND ""      # Disable test step
+    UPDATE_COMMAND ""    # Disable source work-tree update
+)
+ExternalProject_Get_Property(install-Metal SOURCE_DIR)
+include_directories(${SOURCE_DIR}/include)
+
+add_custom_target(install-dependencies DEPENDS install-Hana install-Brigand install-Metal)
+
 
 #=============================================================================
 # Setup compiler flags
