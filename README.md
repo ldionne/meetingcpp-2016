@@ -15,6 +15,13 @@ grunt serve &
 
 and then connect to `localhost:8000` to view locally.
 
+## Building the code samples
+
+```sh
+(mkdir build && cd build && cmake ..)
+cmake --build build
+```
+
 <!-- Links -->
 [Meeting C++]: http://meetingcpp.com
 [reveal.js]: https://github.com/hakimel/reveal.js
