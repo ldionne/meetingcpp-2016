@@ -438,63 +438,41 @@ Note:
 `std::integral_constant` is just a way to represent compile-time integers as types.
 Let's represent them as objects and see what gives.
 
-TODO: These usage examples are bad; we should switch to something that does not
-require a clarification w.r.t. why we can't use straight integers.
-
 ----
 
 ### Compile-time arithmetic: classic approach
 
-<pre><code class='sample' sample='code/present.int.cpp#classic'></code></pre>
+<pre><code class='sample' sample='code/present.int.cpp#operator-classic'></code></pre>
 
-Note:
-Here, we represent integers as types
+----
+
+### Reimplementing our composition of dimensions
+
+<pre><code class='sample' sample='code/present.int.cpp#multiply_dimensions-classic'></code></pre>
 
 ----
 
 ### What if?
 
-<pre><code class='sample' sample='code/present.int.cpp#operators'></code></pre>
+<pre><code class='sample' sample='code/present.int.cpp#operator-hana'></code></pre>
 
 ----
 
 ### Usual operators now work!
 
-<pre><code class='sample' sample='code/present.int.cpp#use-operators-1'></code></pre>
+<pre><code class='sample' sample='code/present.int.cpp#multiply_dimensions-hana'></code></pre>
 
 ----
 
-### (or simply)
+### But we can actually do more
 
-<pre><code class='sample' sample='code/present.int.cpp#use-operators-2'></code></pre>
-
-----
-
-### Syntactic sugar
-
-<pre><code class='sample' sample='code/present.int.cpp#use-operators-3'></code></pre>
+<pre><code class='sample' sample='code/present.int.cpp#literal-operator'></code></pre>
 
 ----
 
-### Compare
+### For example
 
-Before
-<pre><code class='sample' sample='code/present.int.cpp#before'></code></pre>
-
-After
-<pre><code class='sample' sample='code/present.int.cpp#after'></code></pre>
-
-----
-
-### Question: Why not use simple integers?
-
-<pre><code class='sample' sample='code/present.int.cpp#constexpr'></code></pre>
-
-----
-
-### Because we need to transport constexpr-ness
-
-<pre><code class='sample' sample='code/present.int.cpp#overload'></code></pre>
+<pre><code class='sample' sample='code/present.int.cpp#use-literal-operator'></code></pre>
 
 ====================
 

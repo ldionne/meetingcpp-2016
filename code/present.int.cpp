@@ -1,10 +1,79 @@
 // Copyright Louis Dionne 2016
 // Distributed under the Boost Software License, Version 1.0.
 
-#include <cstddef>
-#include <iostream>
-#include <type_traits>
+#include <brigand/brigand.hpp>
 
+#include <array>
+#include <cstddef>
+
+
+// sample(integral_constant)
+template <typename T, T v>
+struct integral_constant {
+  static constexpr T value = v;
+  using value_type = T;
+  using type = integral_constant;
+  constexpr operator value_type() const noexcept { return value; }
+  constexpr value_type operator()() const noexcept { return value; }
+};
+// end-sample
+
+namespace sample_classic {
+// sample(operator-classic)
+template <typename X, typename Y>
+struct plus;
+
+template <typename T, T x, T y>
+struct plus<integral_constant<T, x>, integral_constant<T, y>>
+  : integral_constant<T, x + y>
+{ };
+// end-sample
+
+// sample(multiply_dimensions-classic)
+template <typename D1, typename D2>
+struct multiply_dimensions;
+
+template <typename ...D1, typename ...D2>
+struct multiply_dimensions<brigand::list<D1...>, brigand::list<D2...>>{
+  using type = brigand::list<typename plus<D1, D2>::type...>;
+};
+// end-sample
+
+static_assert(std::is_same<
+  multiply_dimensions<
+    brigand::list<integral_constant<int, 1>, integral_constant<int, 2>>,
+    brigand::list<integral_constant<int, 3>, integral_constant<int, 0>>
+  >::type,
+  brigand::list<integral_constant<int, 4>, integral_constant<int, 2>>
+>{}, "");
+}
+
+// sample(operator-hana)
+template <typename T, T x, T y>
+constexpr auto
+operator+(integral_constant<T, x>, integral_constant<T, y>)
+{ return integral_constant<T, x + y>{}; }
+// end-sample
+
+namespace sample_hana {
+// sample(multiply_dimensions-hana)
+template <typename D1, typename D2>
+struct multiply_dimensions;
+
+template <typename ...D1, typename ...D2>
+struct multiply_dimensions<brigand::list<D1...>, brigand::list<D2...>>{
+  using type = brigand::list<decltype(D1{} + D2{})...>;
+};
+// end-sample
+
+static_assert(std::is_same<
+  multiply_dimensions<
+    brigand::list<integral_constant<int, 1>, integral_constant<int, 2>>,
+    brigand::list<integral_constant<int, 3>, integral_constant<int, 0>>
+  >::type,
+  brigand::list<integral_constant<int, 4>, integral_constant<int, 2>>
+>{}, "");
+}
 
 constexpr int to_int(char c) {
   return static_cast<int>(c) - static_cast<int>('0');
@@ -24,99 +93,26 @@ constexpr int parse() {
   return number;
 }
 
-// sample(integral_constant)
-template <typename T, T v>
-struct integral_constant {
-  static constexpr T value = v;
-  using value_type = T;
-  using type = integral_constant;
-  constexpr operator value_type() const noexcept { return value; }
-  constexpr value_type operator()() const noexcept { return value; }
-};
-// end-sample
-
-// sample(operators)
-template <typename T, T x, T y>
-constexpr auto
-operator+(integral_constant<T, x>, integral_constant<T, y>)
-{ return integral_constant<T, x + y>{}; }
-
-template <typename T, T x, T y>
-constexpr auto
-operator==(integral_constant<T, x>, integral_constant<T, y>)
-{ return integral_constant<bool, x == y>{}; }
-
-// ...
-// end-sample
-
-// sample(use-operators-1)
-static_assert(decltype(
-  integral_constant<int, 1>{} + integral_constant<int, 4>{}
-                              ==
-                 integral_constant<int, 5>{}
-)::value, "");
-// end-sample
-
-// sample(use-operators-2)
-static_assert(
-  integral_constant<int, 1>{} + integral_constant<int, 4>{}
-                              ==
-                 integral_constant<int, 5>{}
-, "");
-// end-sample
-
-// sample(use-operators-3)
+// sample(literal-operator)
 template <char ...c>
 constexpr auto operator"" _c() {
-  constexpr int number = parse<c...>();
-  return integral_constant<int, number>{};
+  constexpr int n = parse<c...>();
+  return integral_constant<int, n>{};
 }
 
-// end-sample sample(use-operators-3) sample(after)
-static_assert(1_c + 4_c == 5_c, "");
+auto n = 10_c + 30_c; // n is integral_constant<int, 40>
 // end-sample
 
-// sample(classic)
-template <typename X, typename Y>
-struct plus;
-
-template <typename T, T x, T y>
-struct plus<integral_constant<T, x>, integral_constant<T, y>> {
-  using type = integral_constant<T, x + y>;
-};
-
-// end-sample sample(before) sample(classic)
-static_assert(std::is_same<
-  plus<integral_constant<int, 1>, integral_constant<int, 4>>::type,
-  integral_constant<int, 5>
->::value, "");
-// end-sample
-
-// sample(constexpr)
-static_assert(1 + 4 == 5, "");
-// end-sample
-
-// sample(overload)
-template <typename X, typename Y>
-auto f(X x, Y y) -> std::enable_if_t<(x == y)> {
-  std::cout << "x == y is known at compile-time" << std::endl;
+// sample(use-literal-operator)
+template <typename Size>
+auto array_iota(Size size) {
+  std::array<int, size> array; // Yes, this is valid!
+  for (int i = 0; i < size; ++i)
+    array[i] = i;
+  return array;
 }
 
-template <typename X, typename Y>
-auto f(X x, Y y) -> std::enable_if_t<(x != y)> {
-  std::cout << "x != y is known at compile-time" << std::endl;
-}
-
-int main() {
-  f(3_c, 3_c); // first overload taken
-  f(4_c, 3_c); // second overload taken
-
-#if 0 // end-sample sample(overload)
-  int i;
-  std::cin >> i;
-  f(i, 3_c); // ERROR! The value of 'i' is only known at runtime!
-  f(3, 3_c); // ERROR! No distinction between 'runtime' and
-             //       'compile-time' int.
-#endif // end-sample sample(overload)
-}
+auto array = array_iota(10_c + 30_c);
 // end-sample
+
+int main() { }
