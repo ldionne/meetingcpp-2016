@@ -970,7 +970,36 @@ std::ostream& to_json(std::ostream& out, T const& v) {
 }
 ```
 
-<!-- TODO: It would be nice to have a slide about a potential language extension to allow stateful metaprogramming. Then, insight is that Hana is the standard library for that. -->
+====================
+
+### Let's dream just a bit
+
+----
+
+### Stateful metaprogramming with language support
+
+```c++
+template <typename T>
+std::ostream& to_json(std::ostream& out, T const& v) {
+  if constexpr (std::meta::Record(reflexpr(T))) {
+    out << "{";
+    auto members = reflexpr(T).members();
+    for (auto i = 0_c; i != members.size(); ++i) {
+      if (i > 0) out << ", ";
+      out << '"' << members[i].name() << "\": ";
+      to_json(out, v.*members[i].pointer());
+    }
+    out << '}';
+  } else {
+    out << v;
+  }
+  return out;
+}
+```
+
+----
+
+### In this world, Hana is just your STL
 
 ====================
 
