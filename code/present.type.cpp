@@ -67,7 +67,9 @@ namespace use_hana_sugar {
 using hana::tuple;
 using hana::type;
 
-// sample(typelist-sugar)
+// sample(typelist)
+
+// or
 template <typename ...T>
 constexpr auto tuple_t = tuple<type<T>...>{};
 

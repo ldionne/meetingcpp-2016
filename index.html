@@ -500,6 +500,22 @@ Before
 After
 <pre><code class='sample' sample='code/present.type.cpp#after'></code></pre>
 
+----
+
+### We can use tuples instead of type lists
+
+<pre><code class='sample' sample='code/present.type.cpp#typelist'></code></pre>
+
+----
+
+### Pays off for complex computations
+
+Before
+<pre><code class='sample' sample='code/benefit.lambda.cpp#mpl'></code></pre>
+
+After
+<pre><code class='sample' sample='code/benefit.lambda.cpp#hana'></code></pre>
+
 ====================
 
 ### Strings
@@ -528,27 +544,21 @@ After
 
 <pre><code class='sample' sample='code/present.string.cpp#literal'></code></pre>
 
+----
+
+### Better compile-time/runtime interoperation
+
+<pre><code class='sample' sample='code/benefit.concat.cpp#concatenate'></code></pre>
+
+Note:
+- We'll see more of that with the event system example
+- TODO: This example is not great, plus it requires hana::string +
+
 ====================
 
 ### We can use this principle on any compile-time "thing"
 
 `std::ratio` comes to mind
-
-====================
-
-### Remember `Typelist` and `mpl::vector`?
-
-----
-
-### Turns out they're just tuples!
-
-<pre><code class='sample' sample='code/present.type.cpp#typelist'></code></pre>
-
-----
-
-### Sugar
-
-<pre><code class='sample' sample='code/present.type.cpp#typelist-sugar'></code></pre>
 
 ====================
 
@@ -601,44 +611,9 @@ After
 
 <pre><code class='sample' sample='code/hana.example.cpp#fusion'></code></pre>
 
-====================
-
-### What are the benefits?
-
 ----
 
-### Seamless integration of runtime and compile-time
-
-<pre><code class='sample' sample='code/benefit.concat.cpp#concatenate'></code></pre>
-
-Note:
-- No need to go back and forth between MPL and Fusion
-- We'll see what I mean when we Hana-ify the event system
-TODO: This example is not great, plus it requires hana::string +
-
-----
-
-### Full power of the language is available
-
-Before
-<pre><code class='sample' sample='code/benefit.lambda.cpp#mpl'></code></pre>
-
-After
-<pre><code class='sample' sample='code/benefit.lambda.cpp#hana'></code></pre>
-
-----
-
-### Full power of the language is available (cont.)
-
-Before
-<pre><code class='sample' sample='code/benefit.is_valid.cpp#cpp14'></code></pre>
-
-After
-<pre><code class='sample' sample='code/benefit.is_valid.cpp#hana'></code></pre>
-
-----
-
-### There are some downsides, too
+### It's not perfect, though
 
 - Pure type manipulations slower than modern alternatives
 - Usually more verbose than MPL style for one liners
