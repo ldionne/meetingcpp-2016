@@ -704,6 +704,10 @@ Note:
 
 ### But does it actually matter?
 
+----
+
+### Compiled with `-O3 -flto`
+
 <iframe width="800" height="400" src="benchmark/callbacks.html" style="background-color: Snow;"></iframe>
 
 ----
@@ -733,6 +737,10 @@ This is what I meant by "Seamless integration of compile-time and runtime"
 
 <iframe width="800" height="400" src="benchmark/callbacks.runtime.html" style="background-color: Snow;"></iframe>
 
+----
+
+### Hana shines when combining compile-time and runtime
+
 ==============================================================================
 
 ## C++17, C++20 and the future
@@ -759,9 +767,9 @@ Spend 30 minutes here
 
 ### C++20 may give us
 
-- lambdas in unevaluated contexts
-- familiar template syntax for lambdas
-- literal operator template for strings
+- lambdas in `decltype`
+- template lambdas
+- literal operator template
 - reflection
 
 ====================
@@ -832,7 +840,7 @@ struct argument {
 
 ====================
 
-#### Familiar template syntax for lambdas
+#### Template lambdas
 
 ```c++
 template <typename Types>
@@ -845,7 +853,7 @@ void register(Types types) {
 
 ----
 
-#### Lambdas in unevaluated contexts
+#### Lambdas in `decltype`
 #### Template argument deduction for class templates
 #### `auto` template parameters
 

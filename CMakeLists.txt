@@ -111,6 +111,7 @@ foreach(target hana hana.runtime std.function std.unordered_map)
     metabench_add_dataset(benchmark.callbacks.${target}
         benchmark/callbacks.${target}.cpp.erb
         "[1, 2, 4, 6, 8, 10]"
+        NAME ${target}
         ENV "{maxn: 10, iterations: 10_000_000}")
     target_compile_options(benchmark.callbacks.${target} PRIVATE -O3 -flto)
 endforeach()
