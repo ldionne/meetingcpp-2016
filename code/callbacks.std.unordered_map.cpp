@@ -15,7 +15,6 @@ int main() {
   events.on("foo", []() { std::cout << "foo again!"     << '\n'; });
   events.on("bar", []() { std::cout << "bar triggered!" << '\n'; });
   events.on("baz", []() { std::cout << "baz triggered!" << '\n'; });
-  // events.on("unknown", []() { }); // WOOPS! Runtime error!
 
   events.trigger("foo");
   events.trigger("baz");
