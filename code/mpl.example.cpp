@@ -18,7 +18,7 @@ using NoVoid = mpl::remove_if<Types, std::is_void<mpl::_1>>::type;
 static_assert(mpl::equal<mpl::vector<int, char, long>,
                          NoVoid>::value, "");
 
-using Pointers = mpl::transform<Types, std::add_pointer<mpl::_>>::type;
+using Pointers = mpl::transform<Types, std::add_pointer<mpl::_1>>::type;
 static_assert(mpl::equal<mpl::vector<int*, void*, char*, long*, void*>,
                          Pointers>::value, "");
 // end-sample
