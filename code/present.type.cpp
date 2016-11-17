@@ -16,8 +16,9 @@ struct is_same : std::false_type { };
 
 template <typename T>
 struct is_same<T, T> : std::true_type { };
+// end-sample
 
-
+// sample(before)
 using IntPtr = add_pointer<int>::type;
 static_assert(is_same<IntPtr, int*>::value, "");
 // end-sample
@@ -44,9 +45,8 @@ operator==(type<T> const&, type<T> const&)
 { return {}; }
 // end-sample
 
-// sample(usage-operators)
+// sample(after)
 constexpr auto IntPtr = add_pointer(type<int>{});
-
 static_assert(IntPtr == type<int*>{}, "");
 // end-sample
 }
