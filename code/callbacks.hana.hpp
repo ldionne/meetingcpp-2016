@@ -62,7 +62,7 @@ void trigger(Event e) const {
   static_assert(is_known_event,
     "trying to trigger an unknown event");
 
-  for (auto& handler : this->map_[e])
+  for (auto& handler : map_[e])
     handler();
 }
 // end-sample
