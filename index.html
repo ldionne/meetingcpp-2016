@@ -63,7 +63,7 @@ Goal: generic containers and algorithms for the standard library
 
 ----
 
-### The Committee suspected templates were hiding something more powerful
+### We suspected they were hiding something more powerful
 
 ----
 
@@ -148,10 +148,6 @@ causes the compiler to give away selected parts of its output.
 ### The C++ Report, January 1995
 ### Todd Veldhuizen publishes [an article](http://www.cs.rpi.edu/~musser/design/blitz/meta-art.html) on Expression Templates
 
-----
-
-### But what are expression templates?
-
 <pre><code class='sample' sample='code/history.et.cpp#usage'></code></pre>
 
 Note:
@@ -159,6 +155,8 @@ In practice, we really want to recognize patterns and optimize them with
 hand-written kernels, so the above is not really useful as-is.
 
 ----
+
+<!-- .slide: class="skip" -->
 
 <pre><code class='sample' sample='code/history.et.cpp#def'></code></pre>
 
@@ -470,6 +468,8 @@ Let's represent them as objects and see what gives.
 
 ----
 
+<!-- .slide: class="skip" -->
+
 ### For example
 
 <pre><code class='sample' sample='code/present.int.cpp#use-literal-operator'></code></pre>
@@ -546,6 +546,8 @@ After
 
 ----
 
+<!-- .slide: class="skip" -->
+
 ### Better compile-time/runtime interoperation
 
 <pre><code class='sample' sample='code/benefit.concat.cpp#concatenate'></code></pre>
@@ -561,7 +563,7 @@ Note:
 
 ====================
 
-### A quick tour of Hana
+### Enter Hana
 
 - data structures like Boost.Fusion
 - algorithms like Boost.Fusion
@@ -612,16 +614,14 @@ Note:
 
 ----
 
+<!-- .slide: class="skip" -->
+
 ### It's not perfect, though
 
 - Pure type manipulations slower than modern alternatives
 - Usually more verbose than MPL style for one liners
 
 ====================
-
-### Hana in action
-
-----
 
 ### Let's consider a simple event system
 
@@ -1080,6 +1080,17 @@ std::ostream& to_json(std::ostream& out, T const& v) {
             Reveal.addEventListener('end-sbs', function() {
               Reveal.configure({ width: 960 });
             }, false);
+
+            // Slides marked with <!-- .slide: class="skip" --> will
+            // be hidden from the presentation. This is handy for removing
+            // material that I think I won't have time to cover, but without
+            // removing the slide.
+            Reveal.addEventListener('ready', function(event) {
+              $(".slides .skip").each(function(index, slide) {
+                slide.remove();
+              });
+              Reveal.sync();
+            });
         </script>
     </body>
 </html>
