@@ -23,6 +23,14 @@ cmake --build build install-dependencies
 cmake --build build
 ```
 
+Note that if you want the reflection example to work, you should use
+
+```sh
+export LLVM_ROOT=path/to/llvm/tree
+cmake .. -DCMAKE_CXX_COMPILER=path/to/custom/clang \
+         -DCMAKE_CXX_FLAGS="-I${LLVM_ROOT}/tools/clang/reflection -Xclang -freflection"
+```
+
 <!-- Links -->
 [Meeting C++]: http://meetingcpp.com
 [reveal.js]: https://github.com/hakimel/reveal.js
