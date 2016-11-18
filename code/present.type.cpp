@@ -35,13 +35,11 @@ constexpr type<T*> add_pointer(type<T> const&)
 { return {}; }
 
 template <typename T, typename U>
-constexpr std::integral_constant<bool, false>
-operator==(type<T> const&, type<U> const&)
+constexpr std::false_type operator==(type<T> const&, type<U> const&)
 { return {}; }
 
 template <typename T>
-constexpr std::integral_constant<bool, true>
-operator==(type<T> const&, type<T> const&)
+constexpr std::true_type operator==(type<T> const&, type<T> const&)
 { return {}; }
 // end-sample
 

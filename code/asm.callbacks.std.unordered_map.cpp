@@ -11,7 +11,7 @@ __attribute__((noinline)) void trigger(Events const& events) {
 }
 
 int main() {
-  event_system<std::string> events{{"event1", "event2", "event3", "event4", "event5"}};
+  event_system events{{"event1", "event2", "event3", "event4", "event5"}};
 
   events.on("event1", []{});
   events.on("event2", []{});

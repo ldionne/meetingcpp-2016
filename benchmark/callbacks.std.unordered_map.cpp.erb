@@ -16,7 +16,7 @@ __attribute__((noinline)) void loop(Events const& events) {
 }
 
 int main() {
-  event_system<std::string> events{{
+  event_system events{{
     <%= (1..env[:maxn]).map { |i| "\"event#{i}\"" }.join(', ') %>
   }};
 

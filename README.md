@@ -19,6 +19,7 @@ and then connect to `localhost:8000` to view locally.
 
 ```sh
 (mkdir build && cd build && cmake ..)
+cmake --build build install-dependencies
 cmake --build build
 ```
 

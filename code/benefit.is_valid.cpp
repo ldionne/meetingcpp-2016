@@ -10,11 +10,6 @@
 namespace hana = boost::hana;
 
 
-namespace std {
-  template <typename T>
-  using void_t = void;
-}
-
 namespace cpp14_sample {
 // sample(cpp14)
 template <typename T, typename = void>

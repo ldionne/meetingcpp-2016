@@ -752,7 +752,7 @@ Spend 30 minutes here
 
 ----
 
-## Or metaprogramming by design, not by accident
+### Or metaprogramming by design, not by accident
 
 ====================
 
@@ -827,8 +827,8 @@ struct argument {
 
   template <typename Arg, typename ...Args>
   constexpr auto operator()(Arg arg, Args ...args) const {
-    auto [tag, value] = arg;
-    if constexpr (tag == *this) {
+    auto [name, value] = arg;
+    if constexpr (name == *this) {
       return value;
     } else {
       static_assert(sizeof...(Args) != 0, "missing argument");
@@ -906,6 +906,21 @@ int main() {
 
 ----
 
+### Should output
+
+```
+{
+  "base": {
+    "a": {"x": 0, "y": 0, "z": 0},
+    "b": {"x": 1, "y": 0, "z": 0},
+    "c": {"x": 0, "y": 0, "z": 1}
+  },
+  "apex": {"x": 0, "y": 1, "z": 0}
+}
+```
+
+----
+
 ### How to write this `to_json`?
 
 ----
@@ -915,7 +930,6 @@ int main() {
 ```c++
 template <typename T>
 std::ostream& to_json(std::ostream& out, T const& v) {
-  typedef reflexpr(T) meta_T;
   if constexpr (std::meta::Record<reflexpr(T)>{}) {
     out << "{";
     using Members = std::meta::get_data_members_m<reflexpr(T)>;

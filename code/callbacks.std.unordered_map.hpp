@@ -13,14 +13,13 @@
 
 
 // sample(struct)
-template <typename Event>
 struct event_system {
   using Callback = std::function<void()>;
-  std::unordered_map<Event, std::vector<Callback>> map_;
+  std::unordered_map<std::string, std::vector<Callback>> map_;
 // end-sample
 
 // sample(constructor)
-explicit event_system(std::initializer_list<Event> events) {
+explicit event_system(std::initializer_list<std::string> events) {
   for (auto const& event : events)
     map_.insert({event, {}});
 }
@@ -28,7 +27,7 @@ explicit event_system(std::initializer_list<Event> events) {
 
 // sample(on)
 template <typename F>
-void on(Event const& event, F handler) {
+void on(std::string const& event, F handler) {
   auto callbacks = map_.find(event);
   assert(callbacks != map_.end() &&
     "trying to add a handler to an unknown event");
@@ -38,7 +37,7 @@ void on(Event const& event, F handler) {
 // end-sample
 
 // sample(trigger)
-void trigger(Event const& event) const {
+void trigger(std::string const& event) const {
   auto callbacks = map_.find(event);
   assert(callbacks != map_.end() &&
     "trying to trigger an unknown event");

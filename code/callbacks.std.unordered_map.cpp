@@ -9,7 +9,7 @@
 
 // sample(usage)
 int main() {
-  event_system<std::string> events{{"foo", "bar", "baz"}};
+  event_system events{{"foo", "bar", "baz"}};
 
   events.on("foo", []() { std::cout << "foo triggered!" << '\n'; });
   events.on("foo", []() { std::cout << "foo again!"     << '\n'; });
