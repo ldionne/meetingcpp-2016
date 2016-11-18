@@ -182,7 +182,7 @@ using Types = LOKI_TYPELIST_4(int, char, float, void);
 static_assert(std::is_same<
     Loki::TL::TypeAt<Types, 2>::Result,
     float
->::value, "");
+>{});
 ```
 
 ----

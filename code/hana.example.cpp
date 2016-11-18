@@ -15,11 +15,10 @@ int main() {
 constexpr auto Types = hana::tuple_t<int, void, char, long>;
 
 constexpr auto NoVoid = hana::remove_if(Types, hana::traits::is_void);
-static_assert(NoVoid == hana::tuple_t<int, char, long>, "");
+static_assert(NoVoid == hana::tuple_t<int, char, long>);
 
-constexpr auto Pointers = hana::transform(Types,
-                                          hana::traits::add_pointer);
-static_assert(Pointers == hana::tuple_t<int*, void*, char*, long*>,"");
+constexpr auto Ptrs = hana::transform(Types, hana::traits::add_pointer);
+static_assert(Ptrs == hana::tuple_t<int*, void*, char*, long*>);
 // end-sample
 
 

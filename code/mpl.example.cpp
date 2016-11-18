@@ -16,11 +16,11 @@ using Types = mpl::vector<int, void, char, long, void>;
 
 using NoVoid = mpl::remove_if<Types, std::is_void<mpl::_1>>::type;
 static_assert(mpl::equal<mpl::vector<int, char, long>,
-                         NoVoid>::value, "");
+                         NoVoid>{});
 
 using Ptrs = mpl::transform<Types, std::add_pointer<mpl::_1>>::type;
 static_assert(mpl::equal<Ptrs,
-                mpl::vector<int*, void*, char*, long*, void*>>{}, "");
+                mpl::vector<int*, void*, char*, long*, void*>>{});
 // end-sample
 
 int main() { }

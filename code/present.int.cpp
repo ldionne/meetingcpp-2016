@@ -45,7 +45,7 @@ static_assert(std::is_same<
     brigand::list<integral_constant<int, 3>, integral_constant<int, 0>>
   >::type,
   brigand::list<integral_constant<int, 4>, integral_constant<int, 2>>
->{}, "");
+>{});
 }
 
 // sample(operator-hana)

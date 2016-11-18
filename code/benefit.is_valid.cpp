@@ -19,8 +19,8 @@ template <typename T>
 struct has_xxx<T, std::void_t<decltype(&T::xxx)>> : std::true_type { };
 
 struct Foo { int xxx; };
-static_assert(has_xxx<Foo>::value, "");
-static_assert(!has_xxx<std::string>::value, "");
+static_assert(has_xxx<Foo>::value);
+static_assert(!has_xxx<std::string>::value);
 // end-sample
 }
 
@@ -31,8 +31,8 @@ auto has_xxx = hana::is_valid([](auto t)
 { });
 
 struct Foo { int xxx; };
-static_assert(has_xxx(hana::type<Foo>{}), "");
-static_assert(!has_xxx(hana::type<std::string>{}), "");
+static_assert(has_xxx(hana::type<Foo>{}));
+static_assert(!has_xxx(hana::type<std::string>{}));
 // end-sample
 }
 

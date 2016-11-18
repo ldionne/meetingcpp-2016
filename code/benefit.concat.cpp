@@ -28,6 +28,6 @@ int main() {
   assert(strings1 == "Hello World"s);
 
   constexpr auto strings2 = concat("Hello"_s, " "_s, "World"_s);
-  static_assert(strings2 == "Hello World"_s, "");
+  static_assert(strings2 == "Hello World"_s);
 }
 // end-sample

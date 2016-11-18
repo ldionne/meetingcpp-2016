@@ -53,7 +53,7 @@ constexpr auto World = string<' ', 'w', 'o', 'r', 'l', 'd'>{};
 constexpr auto Hello_world = Hello + World;
 // end-sample
 
-static_assert(Hello_world == string<'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd'>{}, "");
+static_assert(Hello_world == string<'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd'>{});
 }
 
 // sample(literal)
@@ -61,7 +61,7 @@ template <typename CharT, CharT ...c>
 constexpr string<c...> operator"" _s() { return {}; }
 
 constexpr auto Hello_world = "hello"_s + " world"_s;
-static_assert(Hello_world == "hello world"_s, "");
+static_assert(Hello_world == "hello world"_s);
 // end-sample
 
 int main() { }

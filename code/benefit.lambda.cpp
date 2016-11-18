@@ -31,7 +31,7 @@ using CV_Types = mpl::copy_if<Types,
 static_assert(mpl::equal<
   CV_Types,
   mpl::vector<bool const, char volatile, long const>
->::value, "");
+>{});
 }
 
 

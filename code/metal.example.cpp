@@ -14,11 +14,11 @@ using Types = metal::list<int, void, char, long, void>;
 
 using NoVoid = metal::remove_if<Types, metal::lambda<is_void>>;
 static_assert(std::is_same<NoVoid,
-               metal::list<int, char, long>>{}, "");
+               metal::list<int, char, long>>{});
 
 using Ptrs = metal::transform<metal::lambda<std::add_pointer_t>,Types>;
 static_assert(std::is_same<Ptrs,
-               metal::list<int*, void*, char*, long*, void*>>{}, "");
+               metal::list<int*, void*, char*, long*, void*>>{});
 // end-sample
 
 int main() { }
