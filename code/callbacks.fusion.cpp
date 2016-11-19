@@ -26,11 +26,11 @@ static constexpr bool is_known_event =
 
 // sample(on)
 template <typename Event, typename F>
-void on(F handler) {
+void on(F callback) {
   static_assert(is_known_event<Event>,
-    "trying to add a handler to an unknown event");
+    "trying to add a callback to an unknown event");
 
-  fusion::at_key<Event>(map_).push_back(handler);
+  fusion::at_key<Event>(map_).push_back(callback);
 }
 // end-sample
 
@@ -40,8 +40,8 @@ void trigger() {
   static_assert(is_known_event<Event>,
     "trying to trigger an unknown event");
 
-  for (auto& handler : fusion::at_key<Event>(map_))
-    handler();
+  for (auto& callback : fusion::at_key<Event>(map_))
+    callback();
 }
 // end-sample
 };

@@ -27,7 +27,7 @@ using Hello_world = mpl::insert_range<
 static_assert(mpl::equal<
   Hello_world,
   mpl::string<'h', 'e', 'l', 'l', 'o', ' ', 'w', 'o', 'r', 'l', 'd'>
->::value, "");
+>{});
 } // end mpl_example
 
 

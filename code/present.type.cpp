@@ -20,7 +20,7 @@ struct is_same<T, T> : std::true_type { };
 
 // sample(before)
 using IntPtr = add_pointer<int>::type;
-static_assert(is_same<IntPtr, int*>::value);
+static_assert(is_same<IntPtr, int*>{});
 // end-sample
 }
 
@@ -31,15 +31,15 @@ template <typename T>
 struct type { };
 
 template <typename T>
-constexpr type<T*> add_pointer(type<T> const&)
+constexpr type<T*> add_pointer(type<T>)
 { return {}; }
 
 template <typename T, typename U>
-constexpr std::false_type operator==(type<T> const&, type<U> const&)
+constexpr std::false_type operator==(type<T>, type<U>)
 { return {}; }
 
 template <typename T>
-constexpr std::true_type operator==(type<T> const&, type<T> const&)
+constexpr std::true_type operator==(type<T>, type<T>)
 { return {}; }
 // end-sample
 

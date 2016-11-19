@@ -20,8 +20,8 @@ using intensity   = mpl::vector_c<int, 0, 0, 0, 0, 0, 1, 0>;
 using amount      = mpl::vector_c<int, 0, 0, 0, 0, 0, 0, 1>;
 
 // composite dimensions
-using velocity     = mpl::vector_c<int, 0, 1, -1, 0, 0, 0, 0>; // M/T
-using acceleration = mpl::vector_c<int, 0, 1, -2, 0, 0, 0, 0>; // M/T²
+using velocity     = mpl::vector_c<int, 0, 1, -1, 0, 0, 0, 0>; // L/T
+using acceleration = mpl::vector_c<int, 0, 1, -2, 0, 0, 0, 0>; // L/T²
 using force        = mpl::vector_c<int, 1, 1, -2, 0, 0, 0, 0>; // ML/T²
 // end-sample
 

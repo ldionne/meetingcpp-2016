@@ -27,12 +27,12 @@ explicit event_system(std::initializer_list<std::string> events) {
 
 // sample(on)
 template <typename F>
-void on(std::string const& event, F handler) {
+void on(std::string const& event, F callback) {
   auto callbacks = map_.find(event);
   assert(callbacks != map_.end() &&
-    "trying to add a handler to an unknown event");
+    "trying to add a callback to an unknown event");
 
-  callbacks->second.push_back(handler);
+  callbacks->second.push_back(callback);
 }
 // end-sample
 
@@ -42,8 +42,8 @@ void trigger(std::string const& event) const {
   assert(callbacks != map_.end() &&
     "trying to trigger an unknown event");
 
-  for (auto& handler : callbacks->second)
-    handler();
+  for (auto& callback : callbacks->second)
+    callback();
 }
 // end-sample
 };

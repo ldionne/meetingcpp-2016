@@ -25,12 +25,12 @@ struct event_system {
 
 // sample(on)
 template <typename Event, typename F>
-void on(Event e, F handler) {
+void on(Event e, F callback) {
   auto is_known_event = hana::contains(map_, e);
   static_assert(is_known_event,
-    "trying to add a handler to an unknown event");
+    "trying to add a callback to an unknown event");
 
-  map_[e].push_back(handler);
+  map_[e].push_back(callback);
 }
 // end-sample
 
@@ -50,8 +50,8 @@ void trigger(std::string const& e) const {
   assert(callbacks != dynamic_.end() &&
     "trying to trigger an unknown event");
 
-  for (auto& handler : *callbacks->second)
-    handler();
+  for (auto& callback : *callbacks->second)
+    callback();
 }
 // end-sample
 
@@ -62,8 +62,8 @@ void trigger(Event e) const {
   static_assert(is_known_event,
     "trying to trigger an unknown event");
 
-  for (auto& handler : map_[e])
-    handler();
+  for (auto& callback : map_[e])
+    callback();
 }
 // end-sample
 };
